@@ -2,9 +2,9 @@ package com.daniloff.minesweeper.field.model;
 
 interface MineField {
 
-	int getXSize();
-
-	int getYSize();
+	// int getXSize();
+	//
+	// int getYSize();
 
 	void step(int x, int y);
 

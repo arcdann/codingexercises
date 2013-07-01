@@ -3,6 +3,7 @@ package com.daniloff.minesweeper.field.model;
 import com.daniloff.minesweeper.field.view.MineFieldImage;
 import com.daniloff.minesweeper.misc.SoundPlayer;
 import com.daniloff.minesweeper.misc.TimeWatch;
+import com.daniloff.minesweeper.settings.GameSettings;
 import com.daniloff.minesweeper.strategy.BeforehandCreationStrategy;
 import com.daniloff.minesweeper.strategy.FixedMineCountCreationStrategy;
 import com.daniloff.minesweeper.strategy.MineFieldCreationStrategy;
@@ -11,9 +12,9 @@ import com.daniloff.minesweeper.strategy.ProbabilityCreationStrategy;
 public class MineFieldImpl implements MineField {
 
 	private static final String GAME_GOES = "Game: Goes";
-	private static final int DEFAULT_MINES_COUNT = 12;
-	final private int xSize;
-	final private int ySize;
+	// private static final int DEFAULT_MINES_COUNT = 12;
+	private int xSize = GameSettings.xSize;
+	private int ySize = GameSettings.ySize;
 	final private Cell[][] cells;
 	private MineFieldCreationStrategy strategy;
 	private boolean gameStarted;
@@ -25,10 +26,10 @@ public class MineFieldImpl implements MineField {
 	private int flagsCount;
 	private int correctFlags;
 	private int wrongFlags;
-	private double timeGameRemain;
-	private double timeMoveRemain;
+	private double timeGameRemain = GameSettings.timeForGame;
+	private double timeMoveRemain = GameSettings.timeForMove;
 	private int moveCount;
-	private int pauseRemain = 3;
+	private int pauseRemain = GameSettings.pauseCount;
 	private MineFieldImage image;
 
 	public MineFieldImage getImage() {
@@ -39,13 +40,13 @@ public class MineFieldImpl implements MineField {
 		this.image = image;
 	}
 
-	public int getXSize() {
-		return xSize;
-	}
-
-	public int getYSize() {
-		return ySize;
-	}
+	// public int getXSize() {
+	// return xSize;
+	// }
+	//
+	// public int getYSize() {
+	// return ySize;
+	// }
 
 	public Cell[][] getCells() {
 		return cells;
@@ -91,15 +92,17 @@ public class MineFieldImpl implements MineField {
 	private void applyStrategy(int xInit, int yInit) {
 		boolean[][] mines;
 
-		int strategySwitch = 2;
+		// int strategySwitch = 2;
+
+		String strategySwitch = GameSettings.strategy;
 		switch (strategySwitch) {
-		case 1:
-			strategy = new ProbabilityCreationStrategy(0.15);
+		case "ProbabilityCreationStrategy":
+			strategy = new ProbabilityCreationStrategy(GameSettings.minesProbability);
 			break;
-		case 2:
-			strategy = new FixedMineCountCreationStrategy(DEFAULT_MINES_COUNT);
+		case "FixedMineCountCreationStrategy":
+			strategy = new FixedMineCountCreationStrategy(GameSettings.minesCount);
 			break;
-		case 0:
+		case "BeforehandCreationStrategy":
 			strategy = new BeforehandCreationStrategy();
 			break;
 		default:
@@ -120,7 +123,7 @@ public class MineFieldImpl implements MineField {
 		}
 		createConsoleMap();
 		image.getGameProcessTxt().setText(GAME_GOES);
-		setTimeGameRemain(150.0);
+		setTimeGameRemain(timeGameRemain);
 		startTimer();
 	}
 
@@ -134,8 +137,8 @@ public class MineFieldImpl implements MineField {
 	}
 
 	private void createConsoleMap() {
-		for (int y = 0; y < xSize; y++) {
-			for (int x = 0; x < ySize; x++) {
+		for (int y = 0; y < ySize; y++) {
+			for (int x = 0; x < xSize; x++) {
 				if (cells[x][y].isMined()) {
 					System.out.print("I" + "O");
 					mineCount++;
@@ -155,7 +158,7 @@ public class MineFieldImpl implements MineField {
 			gameStarted = true;
 			applyStrategy(x, y);
 		}
-		setTimeMoveRemain(10.0);
+		setTimeMoveRemain(timeMoveRemain);
 
 		cells[x][y].setShown(true);
 		moveCount++;
@@ -253,7 +256,7 @@ public class MineFieldImpl implements MineField {
 	@Override
 	public void flag(int x, int y) {
 		if (!cells[x][y].isFlagged()) {
-			setTimeMoveRemain(20);
+			setTimeMoveRemain(timeMoveRemain);
 			moveCount++;
 			flagsCount++;
 			cells[x][y].setFlagged(true);

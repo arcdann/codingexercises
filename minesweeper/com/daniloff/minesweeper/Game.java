@@ -14,6 +14,7 @@ public class Game {
 		image.drawMineField();
 
 		field.setImage(image);
+		// field.setGameSettings(gameSettings);
 	}
 
 }
