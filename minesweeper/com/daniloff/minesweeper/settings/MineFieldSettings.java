@@ -1,26 +1,32 @@
 package com.daniloff.minesweeper.settings;
 
-public class GameSettings {
+public class MineFieldSettings {
 
-	public static int xSize;
-	public static int ySize;
-	public static int pauseCount;
-
-	public static String strategy;
-	public static int minesCount;
-	public static double minesProbability = 0.15;
+	private int xSize;
+	private int ySize;
+	private int pauseCount;
+	private String strategy;
+	private int minesCount;
+	private double minesProbability = 0.15;
 	private double minesOccurence;
+	private double timeForMove;
+	private double timeForGame;
 
-	public static double timeForMove;
-	public static double timeForGame;
+	public double getTimeForMove() {
+		return timeForMove;
+	}
+
+	public double getTimeForGame() {
+		return timeForGame;
+	}
+
 	private final double EPS = 0.1;
 	private double rate;
 
-	public GameSettings(String fieldSize, String strategy, String occurrence, String pace) {
+	public MineFieldSettings(String fieldSize, String strategy, String occurrence, String pace) {
 		setSizes(fieldSize);
 		setStrategy(strategy, occurrence);
 		setTimer(pace);
-
 	}
 
 	private void setSizes(String fieldSize) {
@@ -44,7 +50,6 @@ public class GameSettings {
 			ySize = 25;
 			pauseCount = 3;
 		}
-
 	}
 
 	private void setStrategy(String strategy, String occurrence) {
@@ -59,11 +64,11 @@ public class GameSettings {
 		}
 
 		if (strategy.equals("Fixed mines count")) {
-			GameSettings.strategy = "FixedMineCountCreationStrategy";
+			this.strategy = "FixedMineCountCreationStrategy";
 			minesCount = (int) (xSize * ySize * minesProbability * minesOccurence);
 		}
 		if (strategy.equals("Probability mining")) {
-			GameSettings.strategy = "ProbabilityCreationStrategy";
+			this.strategy = "ProbabilityCreationStrategy";
 			minesProbability = minesProbability * minesOccurence;
 		}
 	}
@@ -86,12 +91,27 @@ public class GameSettings {
 		timeForGame = (int) ((timeForMove * xSize * ySize * rate) / 10) * 10 + EPS;
 	}
 
-	public int getxSize() {
+	public int getXSize() {
 		return xSize;
 	}
 
-	public int getySize() {
+	public int getYSize() {
 		return ySize;
 	}
 
+	public int getPauseCount() {
+		return pauseCount;
+	}
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public int getMinesCount() {
+		return minesCount;
+	}
+
+	public double getMinesProbability() {
+		return minesProbability;
+	}
 }

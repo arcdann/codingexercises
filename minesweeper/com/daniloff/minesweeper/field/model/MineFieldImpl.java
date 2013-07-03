@@ -3,7 +3,7 @@ package com.daniloff.minesweeper.field.model;
 import com.daniloff.minesweeper.field.view.MineFieldImage;
 import com.daniloff.minesweeper.misc.SoundPlayer;
 import com.daniloff.minesweeper.misc.TimeWatch;
-import com.daniloff.minesweeper.settings.GameSettings;
+import com.daniloff.minesweeper.settings.MineFieldSettings;
 import com.daniloff.minesweeper.strategy.BeforehandCreationStrategy;
 import com.daniloff.minesweeper.strategy.FixedMineCountCreationStrategy;
 import com.daniloff.minesweeper.strategy.MineFieldCreationStrategy;
@@ -12,73 +12,29 @@ import com.daniloff.minesweeper.strategy.ProbabilityCreationStrategy;
 public class MineFieldImpl implements MineField {
 
 	private static final String GAME_GOES = "Game: Goes";
-	// private static final int DEFAULT_MINES_COUNT = 12;
-	private int xSize = GameSettings.xSize;
-	private int ySize = GameSettings.ySize;
+	private int xSize;
+	private int ySize;
 	final private Cell[][] cells;
 	private MineFieldCreationStrategy strategy;
+	private MineFieldImage image;
+	private MineFieldSettings gameSettings;
 	private boolean gameStarted;
 	private boolean gameOver;
 	private boolean paused;
-
+	private int pauseRemain;
 	private boolean gameWon;
 	private int mineCount;
 	private int flagsCount;
 	private int correctFlags;
 	private int wrongFlags;
-	private double timeGameRemain = GameSettings.timeForGame;
-	private double timeMoveRemain = GameSettings.timeForMove;
+	private double timeGameRemain;
+	private double timeMoveRemain;
 	private int moveCount;
-	private int pauseRemain = GameSettings.pauseCount;
-	private MineFieldImage image;
 
-	public MineFieldImage getImage() {
-		return image;
-	}
-
-	public void setImage(MineFieldImage image) {
-		this.image = image;
-	}
-
-	// public int getXSize() {
-	// return xSize;
-	// }
-	//
-	// public int getYSize() {
-	// return ySize;
-	// }
-
-	public Cell[][] getCells() {
-		return cells;
-	}
-
-	public boolean isGameOver() {
-		return gameOver;
-	}
-
-	public boolean isPaused() {
-		return paused;
-	}
-
-	public double getTimeMoveRemain() {
-		return timeMoveRemain;
-	}
-
-	public void setTimeMoveRemain(double timeMoveRemain) {
-		this.timeMoveRemain = timeMoveRemain;
-	}
-
-	public double getTimeGameRemain() {
-		return timeGameRemain;
-	}
-
-	public void setTimeGameRemain(double timeGameRemain) {
-		this.timeGameRemain = timeGameRemain;
-	}
-
-	public MineFieldImpl(int xSize, int ySize) {
-		this.xSize = xSize;
-		this.ySize = ySize;
+	public MineFieldImpl(MineFieldSettings gameSettings) {
+		this.xSize = gameSettings.getXSize();
+		this.ySize = gameSettings.getYSize();
+		this.pauseRemain = gameSettings.getPauseCount();
 
 		cells = new Cell[xSize][ySize];
 		for (int x = 0; x < xSize; x++) {
@@ -92,15 +48,13 @@ public class MineFieldImpl implements MineField {
 	private void applyStrategy(int xInit, int yInit) {
 		boolean[][] mines;
 
-		// int strategySwitch = 2;
-
-		String strategySwitch = GameSettings.strategy;
+		String strategySwitch = gameSettings.getStrategy();
 		switch (strategySwitch) {
 		case "ProbabilityCreationStrategy":
-			strategy = new ProbabilityCreationStrategy(GameSettings.minesProbability);
+			strategy = new ProbabilityCreationStrategy(gameSettings.getMinesProbability());
 			break;
 		case "FixedMineCountCreationStrategy":
-			strategy = new FixedMineCountCreationStrategy(GameSettings.minesCount);
+			strategy = new FixedMineCountCreationStrategy(gameSettings.getMinesCount());
 			break;
 		case "BeforehandCreationStrategy":
 			strategy = new BeforehandCreationStrategy();
@@ -123,7 +77,7 @@ public class MineFieldImpl implements MineField {
 		}
 		createConsoleMap();
 		image.getGameProcessTxt().setText(GAME_GOES);
-		setTimeGameRemain(timeGameRemain);
+		setTimeGameRemain(gameSettings.getTimeForGame());
 		startTimer();
 	}
 
@@ -158,7 +112,7 @@ public class MineFieldImpl implements MineField {
 			gameStarted = true;
 			applyStrategy(x, y);
 		}
-		setTimeMoveRemain(timeMoveRemain);
+		setTimeMoveRemain(gameSettings.getTimeForMove());
 
 		cells[x][y].setShown(true);
 		moveCount++;
@@ -178,6 +132,38 @@ public class MineFieldImpl implements MineField {
 		}
 		if (paused)
 			pause();
+	}
+
+	@Override
+	public void flag(int x, int y) {
+		if (!cells[x][y].isFlagged()) {
+			setTimeMoveRemain(gameSettings.getTimeForMove());
+			moveCount++;
+			flagsCount++;
+			cells[x][y].setFlagged(true);
+			cells[x][y].setMark(Mark.RedFlag);
+			if (cells[x][y].isMined()) {
+				correctFlags++;
+			} else {
+				wrongFlags++;
+			}
+
+		} else {
+			cells[x][y].setFlagged(false);
+			cells[x][y].setMark(Mark.YellowFlag);
+			moveCount--;
+			flagsCount--;
+			if (cells[x][y].isMined()) {
+				correctFlags--;
+			} else {
+				wrongFlags--;
+			}
+		}
+		if (paused)
+			pause();
+		showMoveCount();
+		showFlagsCount();
+		checkGameOver();
 	}
 
 	private void showMoveCount() {
@@ -253,38 +239,6 @@ public class MineFieldImpl implements MineField {
 		return count;
 	}
 
-	@Override
-	public void flag(int x, int y) {
-		if (!cells[x][y].isFlagged()) {
-			setTimeMoveRemain(timeMoveRemain);
-			moveCount++;
-			flagsCount++;
-			cells[x][y].setFlagged(true);
-			cells[x][y].setMark(Mark.RedFlag);
-			if (cells[x][y].isMined()) {
-				correctFlags++;
-			} else {
-				wrongFlags++;
-			}
-
-		} else {
-			cells[x][y].setFlagged(false);
-			cells[x][y].setMark(Mark.YellowFlag);
-			moveCount--;
-			flagsCount--;
-			if (cells[x][y].isMined()) {
-				correctFlags--;
-			} else {
-				wrongFlags--;
-			}
-		}
-		if (paused)
-			pause();
-		showMoveCount();
-		showFlagsCount();
-		checkGameOver();
-	}
-
 	private void checkGameOver() {
 		if (correctFlags == mineCount && wrongFlags == 0) {
 			gameWon = true;
@@ -312,4 +266,47 @@ public class MineFieldImpl implements MineField {
 		}
 	}
 
+	public MineFieldImage getImage() {
+		return image;
+	}
+
+	public void setImage(MineFieldImage image) {
+		this.image = image;
+	}
+
+	public Cell[][] getCells() {
+		return cells;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public double getTimeMoveRemain() {
+		return timeMoveRemain;
+	}
+
+	public void setTimeMoveRemain(double timeMoveRemain) {
+		this.timeMoveRemain = timeMoveRemain;
+	}
+
+	public double getTimeGameRemain() {
+		return timeGameRemain;
+	}
+
+	public void setTimeGameRemain(double timeGameRemain) {
+		this.timeGameRemain = timeGameRemain;
+	}
+
+	public MineFieldSettings getGameSettings() {
+		return gameSettings;
+	}
+
+	public void setGameSettings(MineFieldSettings gameSettings) {
+		this.gameSettings = gameSettings;
+	}
 }

@@ -1,7 +1,9 @@
 package com.daniloff.minesweeper.invite;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,42 +16,41 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.daniloff.minesweeper.Game;
-import com.daniloff.minesweeper.settings.GameSettings;
+import com.daniloff.minesweeper.settings.MineFieldSettings;
 
 public class InviteDialog extends JFrame {
 
 	private static final long serialVersionUID = 8802687501085736809L;
 
-	// private final int X = 10;
-	// private final int Y = 10;
-
 	private String fieldSize;
 	private String strategy;
 	private String occurrence;
 	private String pace;
+	private int frameWidth = 300;
+	private int frameHeight = 230;
 
 	public void init() {
 
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
 		final JFrame welcomeFrame = new JFrame("Welcome!");
 		welcomeFrame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		welcomeFrame.setSize(230, 300);
+		welcomeFrame.setSize(frameWidth, frameHeight);
 		welcomeFrame.setResizable(false);
-		welcomeFrame.setLocation(850, 250);
+		welcomeFrame.setLocation(screen.width / 2 - frameWidth / 2, screen.height / 2 - frameHeight / 2);
 
 		JButton goButton = new JButton("Go!");
 		goButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-
-					GameSettings gameSettings = new GameSettings(fieldSize, strategy, occurrence, pace);
-					//
-
-					new Game().start(gameSettings.getxSize(), gameSettings.getySize());
-
+					MineFieldSettings gameSettings = new MineFieldSettings(fieldSize, strategy, occurrence, pace);
+					System.out.println("invite " + gameSettings.toString());
+					Game game = new Game(gameSettings);
+					game.setGameSettings(gameSettings);
+					game.start(gameSettings);
 					welcomeFrame.setVisible(false);
 				}
 			}
-
 		});
 
 		JPanel choiceSizePanel = new JPanel();
@@ -70,7 +71,6 @@ public class InviteDialog extends JFrame {
 		choiceStrategyPanel.add(new JLabel("Choose strategy"));
 		String[] strategies = { "Fixed mines count", "Probability mining" };
 		final JComboBox<String> strategiesComboBox = new JComboBox<String>(strategies);
-		// strategiesComboBox.setSelectedItem("Normal");
 		strategy = (String) strategiesComboBox.getSelectedItem();
 		ActionListener stratefiesComboActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,5 +128,4 @@ public class InviteDialog extends JFrame {
 		welcomeFrame.setVisible(true);
 
 	}
-
 }

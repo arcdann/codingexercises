@@ -1,25 +1,25 @@
 package com.daniloff.minesweeper.field.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import com.daniloff.minesweeper.Game;
 import com.daniloff.minesweeper.field.model.Mark;
 import com.daniloff.minesweeper.field.model.MineFieldImpl;
 import com.daniloff.minesweeper.invite.InviteDialog;
 import com.daniloff.minesweeper.settings.FilenameResolver;
-import com.daniloff.minesweeper.settings.GameSettings;
+import com.daniloff.minesweeper.settings.MineFieldSettings;
 
 @SuppressWarnings("serial")
 public class MineFieldImage extends JFrame {
@@ -27,30 +27,31 @@ public class MineFieldImage extends JFrame {
 	private int frameYSize;
 	private final int CELL_SIZE = 25;
 	private final int ADD_HEIGHT = 120;
-
 	private JButton[][] buttons;
-
 	private JLabel timeGameRemainTxt = new JLabel("time Game Remain");
 	private JLabel timeMoveRemainTxt = new JLabel("time Move Remain");
-
 	private JLabel gameProcessTxt = new JLabel("Game: Ready");
 	private JLabel moveCountTxt = new JLabel("Moves ");
 	private JLabel flagsCountTxt = new JLabel("Flags");
 	private JButton restartButton = new JButton("Restart");
 	private JButton newGameButton = new JButton("New Game");
 	private JButton pauseButton = new JButton("Pause");
-
 	private MineFieldImpl field;
+	private MineFieldSettings gameSettings;
 
 	public void drawMineField() {
 
-		frameXSize = GameSettings.xSize * CELL_SIZE;
-		frameYSize = GameSettings.ySize * CELL_SIZE + ADD_HEIGHT;
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
+		frameXSize = gameSettings.getXSize() * CELL_SIZE;
+		frameYSize = gameSettings.getYSize() * CELL_SIZE + ADD_HEIGHT;
 		final JFrame mineField = new JFrame("Поляна");
 		mineField.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		mineField.setSize(frameXSize, frameYSize);
 		mineField.setResizable(true);
 		// mineField.setLocation(850, 250);
+
+		mineField.setLocation(screen.width / 2 - frameXSize / 2, screen.height / 2 - frameYSize / 2);
 
 		JPanel topPanel = new JPanel();
 		JPanel timePanel = new JPanel();
@@ -83,14 +84,14 @@ public class MineFieldImage extends JFrame {
 		mineField.getContentPane().add(panel01);
 
 		// buttons = new JButton[field.getXSize()][field.getYSize()];
-		buttons = new JButton[GameSettings.xSize][GameSettings.ySize];
+		buttons = new JButton[gameSettings.getXSize()][gameSettings.getYSize()];
 
-		for (int y = 0; y < GameSettings.ySize; y++) {
+		for (int y = 0; y < gameSettings.getYSize(); y++) {
 			JPanel panel10 = new JPanel();
 			panel01.add(panel10);
 			panel10.setLayout(new GridLayout(1, 0));
 
-			for (int x = 0; x < GameSettings.xSize; x++) {
+			for (int x = 0; x < gameSettings.getXSize(); x++) {
 				buttons[x][y] = new JButton();
 				try {
 					buttons[x][y].setIcon(new ImageIcon(ImageIO.read(new File("images/nonChecked_25.png"))));
@@ -139,8 +140,10 @@ public class MineFieldImage extends JFrame {
 
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
-					// new Game().start(field.getXSize(),field.getYSize());
-					new Game().start(GameSettings.xSize, GameSettings.ySize);
+					Game game = new Game(gameSettings);
+					game.setGameSettings(gameSettings);
+					game.start(gameSettings);
+
 				}
 			}
 		});
@@ -177,8 +180,8 @@ public class MineFieldImage extends JFrame {
 	}
 
 	protected void redrawMineField() throws IOException {
-		for (int x = 0; x < GameSettings.xSize; x++) {
-			for (int y = 0; y < GameSettings.ySize; y++) {
+		for (int x = 0; x < gameSettings.getXSize(); x++) {
+			for (int y = 0; y < gameSettings.getYSize(); y++) {
 				if (field.getCells()[x][y].isShown()) {
 					String fileName = fileNameCompose(x, y);
 					buttons[x][y].setIcon(new ImageIcon(ImageIO.read(new File(fileName))));
@@ -248,4 +251,11 @@ public class MineFieldImage extends JFrame {
 		this.pauseButton = pauseButton;
 	}
 
+	public MineFieldSettings getGameSettings() {
+		return gameSettings;
+	}
+
+	public void setGameSettings(MineFieldSettings gameSettings) {
+		this.gameSettings = gameSettings;
+	}
 }
