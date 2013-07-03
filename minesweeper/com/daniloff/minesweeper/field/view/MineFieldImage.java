@@ -3,17 +3,18 @@ package com.daniloff.minesweeper.field.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import com.daniloff.minesweeper.Game;
 import com.daniloff.minesweeper.field.model.Mark;
 import com.daniloff.minesweeper.field.model.MineFieldImpl;
@@ -38,20 +39,18 @@ public class MineFieldImage extends JFrame {
 	private JButton pauseButton = new JButton("Pause");
 	private MineFieldImpl field;
 	private MineFieldSettings gameSettings;
+	private Dimension screen;
 
 	public void drawMineField() {
 
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
 		frameXSize = gameSettings.getXSize() * CELL_SIZE;
 		frameYSize = gameSettings.getYSize() * CELL_SIZE + ADD_HEIGHT;
+		screen = gameSettings.getScreen();
 		final JFrame mineField = new JFrame("Поляна");
 		mineField.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		mineField.setSize(frameXSize, frameYSize);
 		mineField.setResizable(true);
-		// mineField.setLocation(850, 250);
-
-		mineField.setLocation(screen.width / 2 - frameXSize / 2, screen.height / 2 - frameYSize / 2);
+		mineField.setLocation((screen.width - frameXSize) / 2, (screen.height - frameYSize) / 2);
 
 		JPanel topPanel = new JPanel();
 		JPanel timePanel = new JPanel();
@@ -83,7 +82,6 @@ public class MineFieldImage extends JFrame {
 		panel01.setLayout(new GridLayout(0, 1));
 		mineField.getContentPane().add(panel01);
 
-		// buttons = new JButton[field.getXSize()][field.getYSize()];
 		buttons = new JButton[gameSettings.getXSize()][gameSettings.getYSize()];
 
 		for (int y = 0; y < gameSettings.getYSize(); y++) {
@@ -143,7 +141,6 @@ public class MineFieldImage extends JFrame {
 					Game game = new Game(gameSettings);
 					game.setGameSettings(gameSettings);
 					game.start(gameSettings);
-
 				}
 			}
 		});
@@ -153,8 +150,9 @@ public class MineFieldImage extends JFrame {
 
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
-					new InviteDialog().init();
-
+					InviteDialog dialog = new InviteDialog();
+					dialog.setScreen(screen);
+					dialog.init();
 				}
 			}
 		});
@@ -172,7 +170,6 @@ public class MineFieldImage extends JFrame {
 		mineField.getContentPane().add(BorderLayout.NORTH, topPanel);
 		mineField.getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 		mineField.setVisible(true);
-
 	}
 
 	public MineFieldImpl getField() {

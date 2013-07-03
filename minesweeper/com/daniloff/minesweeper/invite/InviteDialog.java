@@ -3,7 +3,6 @@ package com.daniloff.minesweeper.invite;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -28,10 +27,9 @@ public class InviteDialog extends JFrame {
 	private String pace;
 	private int frameWidth = 300;
 	private int frameHeight = 230;
+	private Dimension screen;
 
 	public void init() {
-
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		final JFrame welcomeFrame = new JFrame("Welcome!");
 		welcomeFrame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,7 +42,7 @@ public class InviteDialog extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					MineFieldSettings gameSettings = new MineFieldSettings(fieldSize, strategy, occurrence, pace);
-					System.out.println("invite " + gameSettings.toString());
+					gameSettings.setScreen(screen);
 					Game game = new Game(gameSettings);
 					game.setGameSettings(gameSettings);
 					game.start(gameSettings);
@@ -127,5 +125,9 @@ public class InviteDialog extends JFrame {
 
 		welcomeFrame.setVisible(true);
 
+	}
+
+	public void setScreen(Dimension screen) {
+		this.screen = screen;
 	}
 }

@@ -1,5 +1,7 @@
 package com.daniloff.minesweeper.settings;
 
+import java.awt.Dimension;
+
 public class MineFieldSettings {
 
 	private int xSize;
@@ -11,6 +13,7 @@ public class MineFieldSettings {
 	private double minesOccurence;
 	private double timeForMove;
 	private double timeForGame;
+	private Dimension screen;
 
 	public double getTimeForMove() {
 		return timeForMove;
@@ -113,5 +116,13 @@ public class MineFieldSettings {
 
 	public double getMinesProbability() {
 		return minesProbability;
+	}
+
+	public Dimension getScreen() {
+		return screen;
+	}
+
+	public void setScreen(Dimension screen) {
+		this.screen = screen;
 	}
 }
