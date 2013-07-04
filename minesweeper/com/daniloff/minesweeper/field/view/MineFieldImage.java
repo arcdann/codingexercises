@@ -40,6 +40,7 @@ public class MineFieldImage extends JFrame {
 	private MineFieldImpl field;
 	private MineFieldSettings gameSettings;
 	private Dimension screen;
+	private boolean stopTimeWatch;
 
 	public void drawMineField() {
 
@@ -135,9 +136,9 @@ public class MineFieldImage extends JFrame {
 
 		restartButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
+					stopTimeWatch = true;
 					Game game = new Game(gameSettings);
 					game.setGameSettings(gameSettings);
 					game.start(gameSettings);
@@ -147,9 +148,9 @@ public class MineFieldImage extends JFrame {
 
 		newGameButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
+					stopTimeWatch = true;
 					InviteDialog dialog = new InviteDialog();
 					dialog.setScreen(screen);
 					dialog.init();
@@ -254,5 +255,9 @@ public class MineFieldImage extends JFrame {
 
 	public void setGameSettings(MineFieldSettings gameSettings) {
 		this.gameSettings = gameSettings;
+	}
+
+	public boolean isStopTimeWatch() {
+		return stopTimeWatch;
 	}
 }

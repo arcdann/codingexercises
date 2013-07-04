@@ -94,7 +94,7 @@ public class InviteDialog extends JFrame {
 
 		JPanel choicePacePanel = new JPanel();
 		choicePacePanel.add(new JLabel("Choose game pace"));
-		String[] paces = { "Slow", "Normal", "Fast" };
+		String[] paces = { "No Limit","Slow", "Normal", "Fast" };
 		final JComboBox<String> pacesComboBox = new JComboBox<String>(paces);
 		pacesComboBox.setSelectedItem("Normal");
 		pace = (String) pacesComboBox.getSelectedItem();

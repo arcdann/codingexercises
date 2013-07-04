@@ -14,6 +14,7 @@ public class MineFieldSettings {
 	private double timeForMove;
 	private double timeForGame;
 	private Dimension screen;
+	private boolean noTimeLimit;
 
 	public double getTimeForMove() {
 		return timeForMove;
@@ -91,7 +92,13 @@ public class MineFieldSettings {
 			timeForMove = 8 + EPS;
 			rate = 0.9;
 		}
+		
+		if(pace.equals("No Limit")){
+			noTimeLimit=true;
+		}
+		if(!noTimeLimit){
 		timeForGame = (int) ((timeForMove * xSize * ySize * rate) / 10) * 10 + EPS;
+		}
 	}
 
 	public int getXSize() {
@@ -122,7 +129,11 @@ public class MineFieldSettings {
 		return screen;
 	}
 
+	public boolean isNoTimeLimit() {
+		return noTimeLimit;
+	}
 	public void setScreen(Dimension screen) {
 		this.screen = screen;
 	}
+
 }

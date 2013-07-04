@@ -30,8 +30,9 @@ public class MineFieldImpl implements MineField {
 	private double timeGameRemain;
 	private double timeMoveRemain;
 	private int moveCount;
+	private boolean noTimeLimit;
 
-	public MineFieldImpl(MineFieldSettings gameSettings) {
+ 	public MineFieldImpl(MineFieldSettings gameSettings) {
 		this.xSize = gameSettings.getXSize();
 		this.ySize = gameSettings.getYSize();
 		this.pauseRemain = gameSettings.getPauseCount();
@@ -78,7 +79,10 @@ public class MineFieldImpl implements MineField {
 		createConsoleMap();
 		image.getGameProcessTxt().setText(GAME_GOES);
 		setTimeGameRemain(gameSettings.getTimeForGame());
-		startTimer();
+		setNoTimeLimit(gameSettings.isNoTimeLimit());
+		if(!noTimeLimit){
+			startTimer();
+		}
 	}
 
 	private void startTimer() {
@@ -308,5 +312,9 @@ public class MineFieldImpl implements MineField {
 
 	public void setGameSettings(MineFieldSettings gameSettings) {
 		this.gameSettings = gameSettings;
+	}
+
+	public void setNoTimeLimit(boolean noTimeLimit) {
+		this.noTimeLimit = noTimeLimit;
 	}
 }

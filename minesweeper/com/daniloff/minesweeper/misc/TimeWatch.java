@@ -19,7 +19,7 @@ public class TimeWatch implements Runnable {
 	@Override
 	public void run() {
 
-		while (!field.isGameOver()) {
+		while (!field.isGameOver()&&!image.isStopTimeWatch()) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
