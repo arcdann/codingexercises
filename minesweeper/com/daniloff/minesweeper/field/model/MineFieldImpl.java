@@ -33,6 +33,7 @@ public class MineFieldImpl implements MineField {
 	private double timeMoveRemain;
 	private int moveCount;
 	private boolean noTimeLimit;
+	private String sound;
 
 	public MineFieldImpl(MineFieldSettings gameSettings) {
 		this.xSize = gameSettings.getXSize();
@@ -51,8 +52,8 @@ public class MineFieldImpl implements MineField {
 	private void applyStrategy(int xInit, int yInit) {
 		boolean[][] mines;
 
-		// String strategySwitch = gameSettings.getStrategy();
-		String strategySwitch = "BeforehandCreationStrategy";
+		String strategySwitch = gameSettings.getStrategy();
+		// String strategySwitch = "BeforehandCreationStrategy";
 		switch (strategySwitch) {
 		case "ProbabilityCreationStrategy":
 			strategy = new ProbabilityCreationStrategy(gameSettings.getMinesProbability());
@@ -206,7 +207,7 @@ public class MineFieldImpl implements MineField {
 
 	private void gameOver(int xBlast, int yBlast) {
 		cells[xBlast][yBlast].setMark(Mark.Blast);
-		SoundPlayer.play("sounds/Blast.au");
+		sound = "sounds/Blast.au";
 		gameOver();
 		image.getGameProcessTxt().setText("Game: Blasted");
 	}
@@ -217,11 +218,9 @@ public class MineFieldImpl implements MineField {
 			for (int y = 0; y < ySize; y++) {
 				if (cells[x][y].isMined()) {
 					if (cells[x][y].isFlagged()) {
-						System.out.println("cell " + x + " " + y + " isDiscovered");
 						cells[x][y].setMark(Mark.DiscoveredMine);
 						cells[x][y].setShown(true);
 					} else {
-						System.out.println("cell " + x + " " + y + " isMined");
 						cells[x][y].setMark(Mark.Mine);
 						cells[x][y].setShown(true);
 					}
@@ -231,13 +230,13 @@ public class MineFieldImpl implements MineField {
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
 			image.getGameProcessTxt().setText("Game: Win!");
-			SoundPlayer.play("sounds/Win.au");
+			sound = "sounds/Win.au";
 		} else {
-			if (image.getGameProcessTxt().getText().equals("Game: Blasted"))
-				return;
-			image.getGameProcessTxt().setText("Game: Lose");
-			SoundPlayer.play("sounds/Lose.au");
+			if (sound == null) {
+				sound = "sounds/Lose.au";
+			}
 		}
+		soundHelper(sound);
 		try {
 			image.redrawMineField();
 		} catch (IOException e) {
@@ -272,17 +271,21 @@ public class MineFieldImpl implements MineField {
 				paused = true;
 				pauseRemain--;
 				image.getPauseButton().setText("Resume");
-				SoundPlayer.play("sounds/Pause.au");
+				sound = "sounds/Pause.au";
+				soundHelper(sound);
 			}
 		} else {
 			paused = false;
 			image.getPauseButton().setText("Pause (" + pauseRemain + ")");
-			try {
-				SoundPlayer.play("sounds/Pause.au");
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+			sound = "sounds/Pause.au";
+			soundHelper(sound);
 		}
+	}
+
+	private void soundHelper(String sound) {
+		this.sound = sound;
+		SoundPlayer.play(sound);
+		sound = null;
 	}
 
 	public MineFieldImage getImage() {

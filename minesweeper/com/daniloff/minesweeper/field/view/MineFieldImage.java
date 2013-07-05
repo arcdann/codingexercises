@@ -138,7 +138,7 @@ public class MineFieldImage extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
-					stopTimeWatch=true;
+					stopTimeWatch = true;
 					Game game = new Game(gameSettings);
 					game.setGameSettings(gameSettings);
 					game.start(gameSettings);
@@ -150,7 +150,7 @@ public class MineFieldImage extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mineField.setVisible(false);
-					stopTimeWatch=true;
+					stopTimeWatch = true;
 					InviteDialog dialog = new InviteDialog();
 					dialog.setScreen(screen);
 					dialog.init();
@@ -186,7 +186,6 @@ public class MineFieldImage extends JFrame {
 				}
 			}
 		}
-		System.out.println("redraw");
 	}
 
 	private String fileNameCompose(int xCmp, int yCmp) {
