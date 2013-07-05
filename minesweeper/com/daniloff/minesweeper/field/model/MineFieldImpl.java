@@ -1,5 +1,7 @@
 package com.daniloff.minesweeper.field.model;
 
+import java.io.IOException;
+
 import com.daniloff.minesweeper.field.view.MineFieldImage;
 import com.daniloff.minesweeper.misc.SoundPlayer;
 import com.daniloff.minesweeper.misc.TimeWatch;
@@ -32,7 +34,7 @@ public class MineFieldImpl implements MineField {
 	private int moveCount;
 	private boolean noTimeLimit;
 
- 	public MineFieldImpl(MineFieldSettings gameSettings) {
+	public MineFieldImpl(MineFieldSettings gameSettings) {
 		this.xSize = gameSettings.getXSize();
 		this.ySize = gameSettings.getYSize();
 		this.pauseRemain = gameSettings.getPauseCount();
@@ -49,7 +51,8 @@ public class MineFieldImpl implements MineField {
 	private void applyStrategy(int xInit, int yInit) {
 		boolean[][] mines;
 
-		String strategySwitch = gameSettings.getStrategy();
+		// String strategySwitch = gameSettings.getStrategy();
+		String strategySwitch = "BeforehandCreationStrategy";
 		switch (strategySwitch) {
 		case "ProbabilityCreationStrategy":
 			strategy = new ProbabilityCreationStrategy(gameSettings.getMinesProbability());
@@ -80,7 +83,7 @@ public class MineFieldImpl implements MineField {
 		image.getGameProcessTxt().setText(GAME_GOES);
 		setTimeGameRemain(gameSettings.getTimeForGame());
 		setNoTimeLimit(gameSettings.isNoTimeLimit());
-		if(!noTimeLimit){
+		if (!noTimeLimit) {
 			startTimer();
 		}
 	}
@@ -117,6 +120,10 @@ public class MineFieldImpl implements MineField {
 			applyStrategy(x, y);
 		}
 		setTimeMoveRemain(gameSettings.getTimeForMove());
+		if (noTimeLimit) {
+			image.getTimeGameRemainTxt().setText("No gametime limit");
+			image.getTimeMoveRemainTxt().setText("No movetime limit");
+		}
 
 		cells[x][y].setShown(true);
 		moveCount++;
@@ -210,11 +217,13 @@ public class MineFieldImpl implements MineField {
 			for (int y = 0; y < ySize; y++) {
 				if (cells[x][y].isMined()) {
 					if (cells[x][y].isFlagged()) {
+						System.out.println("cell " + x + " " + y + " isDiscovered");
 						cells[x][y].setMark(Mark.DiscoveredMine);
 						cells[x][y].setShown(true);
 					} else {
-						cells[x][y].setShown(true);
+						System.out.println("cell " + x + " " + y + " isMined");
 						cells[x][y].setMark(Mark.Mine);
+						cells[x][y].setShown(true);
 					}
 				}
 			}
@@ -228,6 +237,12 @@ public class MineFieldImpl implements MineField {
 				return;
 			image.getGameProcessTxt().setText("Game: Lose");
 			SoundPlayer.play("sounds/Lose.au");
+		}
+		try {
+			image.redrawMineField();
+		} catch (IOException e) {
+			System.out.println("gamOver can't invoke reDraw");
+			e.printStackTrace();
 		}
 	}
 
