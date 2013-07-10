@@ -47,7 +47,7 @@ public class MineFieldImage extends JFrame {
 		frameXSize = gameSettings.getXSize() * CELL_SIZE;
 		frameYSize = gameSettings.getYSize() * CELL_SIZE + ADD_HEIGHT;
 		screen = gameSettings.getScreen();
-		final JFrame mineField = new JFrame("Поляна");
+		final JFrame mineField = new JFrame("MineField");
 		mineField.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		mineField.setSize(frameXSize, frameYSize);
 		mineField.setResizable(true);
@@ -93,7 +93,7 @@ public class MineFieldImage extends JFrame {
 			for (int x = 0; x < gameSettings.getXSize(); x++) {
 				buttons[x][y] = new JButton();
 				try {
-					buttons[x][y].setIcon(new ImageIcon(ImageIO.read(new File("images/nonChecked_25.png"))));
+					buttons[x][y].setIcon(new ImageIcon(ImageIO.read(new File("resources/images/nonChecked_25.png"))));
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}

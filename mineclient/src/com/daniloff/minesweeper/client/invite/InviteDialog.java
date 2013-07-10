@@ -54,7 +54,7 @@ public class InviteDialog extends JFrame {
 		JPanel choiceSizePanel = new JPanel();
 		choiceSizePanel.add(new JLabel("Choose field size"));
 		String[] sizes = { "Little", "Normal", "Big", "Huge" };
-		final JComboBox<String> sizesComboBox = new JComboBox<String>(sizes);
+		final JComboBox sizesComboBox = new JComboBox(sizes);
 		sizesComboBox.setSelectedItem("Normal");
 		fieldSize = (String) sizesComboBox.getSelectedItem();
 		ActionListener sizesComboActionListener = new ActionListener() {
@@ -68,7 +68,7 @@ public class InviteDialog extends JFrame {
 		JPanel choiceStrategyPanel = new JPanel();
 		choiceStrategyPanel.add(new JLabel("Choose strategy"));
 		String[] strategies = { "Fixed mines count", "Probability mining" };
-		final JComboBox<String> strategiesComboBox = new JComboBox<String>(strategies);
+		final JComboBox strategiesComboBox = new JComboBox(strategies);
 		strategy = (String) strategiesComboBox.getSelectedItem();
 		ActionListener stratefiesComboActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +81,7 @@ public class InviteDialog extends JFrame {
 		JPanel choiceOccurrencePanel = new JPanel();
 		choiceOccurrencePanel.add(new JLabel("Choose mines freqency"));
 		String[] occurrences = { "Rare", "Normal", "Often" };
-		final JComboBox<String> occurrenceComboBox = new JComboBox<String>(occurrences);
+		final JComboBox occurrenceComboBox = new JComboBox(occurrences);
 		occurrenceComboBox.setSelectedItem("Normal");
 		occurrence = (String) occurrenceComboBox.getSelectedItem();
 		ActionListener occurrenceComboActionListener = new ActionListener() {
@@ -94,8 +94,8 @@ public class InviteDialog extends JFrame {
 
 		JPanel choicePacePanel = new JPanel();
 		choicePacePanel.add(new JLabel("Choose game pace"));
-		String[] paces = { "No Limit","Slow", "Normal", "Fast" };
-		final JComboBox<String> pacesComboBox = new JComboBox<String>(paces);
+		String[] paces = { "No Limit", "Slow", "Normal", "Fast" };
+		final JComboBox pacesComboBox = new JComboBox(paces);
 		pacesComboBox.setSelectedItem("Normal");
 		pace = (String) pacesComboBox.getSelectedItem();
 		ActionListener pasesComboActionListener = new ActionListener() {

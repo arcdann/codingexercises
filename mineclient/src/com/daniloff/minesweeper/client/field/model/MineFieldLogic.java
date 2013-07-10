@@ -224,7 +224,7 @@ public class MineFieldLogic implements MineField {
 
 	private void gameOver(int xBlast, int yBlast) {
 		cells[xBlast][yBlast].setMark(Mark.Blast);
-		sound = "sounds/Blast.au";
+		sound = "resources/sounds/Blast.au";
 		gameOver();
 		image.getGameProcessTxt().setText("Game: Blasted");
 	}
@@ -247,10 +247,10 @@ public class MineFieldLogic implements MineField {
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
 			image.getGameProcessTxt().setText("Game: Win!");
-			sound = "sounds/Win.au";
+			sound = "resources/sounds/Win.au";
 		} else {
 			if (sound == null) {
-				sound = "sounds/Lose.au";
+				sound = "resources/sounds/Lose.au";
 			}
 		}
 		soundHelper(sound);
@@ -288,13 +288,13 @@ public class MineFieldLogic implements MineField {
 				paused = true;
 				pauseRemain--;
 				image.getPauseButton().setText("Resume");
-				sound = "sounds/Pause.au";
+				sound = "resources/sounds/Pause.au";
 				soundHelper(sound);
 			}
 		} else {
 			paused = false;
 			image.getPauseButton().setText("Pause (" + pauseRemain + ")");
-			sound = "sounds/Pause.au";
+			sound = "resources/sounds/Pause.au";
 			soundHelper(sound);
 		}
 	}

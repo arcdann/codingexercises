@@ -1,6 +1,5 @@
 package com.daniloff.minesweeper.server;
 
-import com.daniloff.minesweeper.client.settings.GameSettings;
 import com.daniloff.minesweeper.server.strategy.BeforehandCreationStrategy;
 import com.daniloff.minesweeper.server.strategy.FixedMineCountCreationStrategy;
 import com.daniloff.minesweeper.server.strategy.MineFieldCreationStrategy;
@@ -57,8 +56,6 @@ public class ResponseMaker {
 		this.requestIn = requestIn;
 	}
 
-	public void setMineFieldSettings(GameSettings mineFieldSettings) {
-	}
 
 	public void setResponse(Response response) {
 		this.response = response;
