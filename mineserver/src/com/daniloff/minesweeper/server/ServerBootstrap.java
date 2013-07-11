@@ -10,7 +10,7 @@ import java.net.Socket;
 import com.daniloff.minesweeper.serverAPI.Request;
 import com.daniloff.minesweeper.serverAPI.Response;
 
-public class MiningServer {
+public class ServerBootstrap {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("Server console: The server is running");
