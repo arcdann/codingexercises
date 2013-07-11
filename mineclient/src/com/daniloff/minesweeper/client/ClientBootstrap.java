@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 import com.daniloff.minesweeper.client.invite.InviteDialog;
 
-public class Bootstrap {
+public class ClientBootstrap {
 
 	public static void main(String[] args) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
