@@ -16,14 +16,6 @@ public class GameSettings {
 	private Dimension screen;
 	private boolean noTimeLimit;
 
-	public double getTimeForMove() {
-		return timeForMove;
-	}
-
-	public double getTimeForGame() {
-		return timeForGame;
-	}
-
 	private final double EPS = 0.1;
 	private double rate;
 
@@ -102,27 +94,33 @@ public class GameSettings {
 	}
 
 	public int getXSize() {
-		return xSize;
+		// return xSize;
+		return 10;
 	}
 
 	public int getYSize() {
-		return ySize;
+//		return ySize;
+		return 10;
 	}
 
 	public int getPauseCount() {
-		return pauseCount;
+//		return pauseCount;
+		return 5;
 	}
 
 	public String getStrategy() {
-		return strategy;
+//		return strategy;
+	return	"FixedMineCountCreationStrategy";
 	}
 
 	public int getMinesCount() {
-		return minesCount;
+//		return minesCount;
+		return 15;
 	}
 
 	public double getMinesProbability() {
-		return minesProbability;
+//		return minesProbability;
+		return 0.15;
 	}
 
 	public Dimension getScreen() {
@@ -135,5 +133,15 @@ public class GameSettings {
 
 	public void setScreen(Dimension screen) {
 		this.screen = screen;
+	}
+
+	public double getTimeForMove() {
+//		return timeForMove;
+		return 20.0;
+	}
+
+	public double getTimeForGame() {
+//		return timeForGame;
+		return 200.0;
 	}
 }

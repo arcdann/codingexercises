@@ -1,6 +1,7 @@
 package com.daniloff.mibesweeper.android;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.daniloff.minesweeper.client.field.model.MineFieldLogic;
+import com.daniloff.minesweeper.client.settings.GameSettings;
 
 public class MainActivity extends Activity {
 
@@ -22,8 +24,10 @@ public class MainActivity extends Activity {
 	private int screenWidth;
 	private int screenHeight;
 	private final Button[][] buttons = new Button[X][Y];
-	private MineFieldLogic field;
+	public MineFieldLogic field;
+	public GameSettings gameSettings;
 	TextView topText;
+	OnClickListener listener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +41,31 @@ public class MainActivity extends Activity {
 
 		screenWidth = display.getWidth();
 		screenHeight = display.getHeight();
-		topText.setText("screenWidth =" + screenWidth + " screenHeight =" + screenHeight);
+		topText.setText("screen " + screenWidth + " x " + screenHeight);
+		listenButton();
 		drawMineField();
 
 	}
 
+	private void listenButton() {
+		listener = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				int id = v.getId();
+				int x = id % 100;
+				int y = (id - x)/100;
+				topText.setText("buttons[" + x + "][" + y + "] stepped");
+//				v.setBackgroundColor(0);
+				buttons[x][y].setText("#");
+//				buttons[x][y].setBackgroundColor(Color.BLUE);
+			}
+		};
+
+	}
+
 	public void drawMineField() {
+
 		TableLayout tl = (TableLayout) findViewById(R.id.tableLayout);
 
 		for (int y = 0; y < Y; y++) {
@@ -52,30 +75,38 @@ public class MainActivity extends Activity {
 
 				buttons[x][y] = new Button(this);
 
-				buttons[x][y].setWidth(screenWidth / X - 4);
-				buttons[x][y].setHeight(buttons[x][y].getHeight());
+				buttons[x][y].setWidth(screenWidth / X - 5);
+				buttons[x][y].setHeight(buttons[x][y].getWidth());
+//				buttons[x][y].setBackgroundColor(Color.GREEN);
 				final int xInner = x;
 				final int yInner = y;
-				buttons[x][y].setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (!flagButtonPressed) {
-							topText.setText("buttons[" + xInner + "][" + yInner + "] stepped");
-							buttons[xInner][yInner].setText("#");
-							
-							
-							
-							field.step(xInner, yInner);
-							
-							
-							
-						} else {
-							topText.setText("buttons[" + xInner + "][" + yInner + "] flagged");
-							flagButtonPressed = false;
-							buttons[xInner][yInner].setText("F");
-						}
-					}
-				});
+
+				int id = y * 100 + x;
+				buttons[x][y].setId(id);
+				buttons[x][y].setOnClickListener(listener);
+
+				// buttons[x][y].setOnClickListener(new OnClickListener() {
+				// @Override
+				// public void onClick(View v) {
+				// if (!flagButtonPressed) {
+				// topText.setText("buttons[" + xInner + "][" + yInner +
+				// "] stepped");
+				// buttons[xInner][yInner].setText("#");
+				//
+				// // field.step(xInner, yInner);
+				//
+				// // String stubText = field.stub();
+				//
+				// // topText.setText(stubText);
+				//
+				// } else {
+				// topText.setText("buttons[" + xInner + "][" + yInner +
+				// "] flagged");
+				// flagButtonPressed = false;
+				// buttons[xInner][yInner].setText("F");
+				// }
+				// }
+				// });
 				tr.addView(buttons[x][y]);
 			}
 			tl.addView(tr);
@@ -92,6 +123,7 @@ public class MainActivity extends Activity {
 
 		Button restartButton = (Button) findViewById(R.id.restartButton);
 		restartButton.setText("Restart");
+		restartButton.setBackgroundColor(Color.BLUE);
 		restartButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

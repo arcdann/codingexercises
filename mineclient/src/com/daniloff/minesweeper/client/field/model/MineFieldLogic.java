@@ -119,6 +119,12 @@ public class MineFieldLogic implements MineField {
 		}
 		System.out.println("MineCount: " + mineCount);
 	}
+	
+	
+	public String stub() {
+		return "Stub String Return";
+		
+	}
 
 	@Override
 	public void step(int x, int y) {
