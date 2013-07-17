@@ -1,7 +1,7 @@
 package com.daniloff.mibesweeper.android;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.View;
@@ -12,6 +12,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.daniloff.minesweeper.client.field.model.MineFieldLogic;
+
 public class MainActivity extends Activity {
 
 	private final int X = 10;
@@ -19,14 +21,16 @@ public class MainActivity extends Activity {
 	private boolean flagButtonPressed;
 	private int screenWidth;
 	private int screenHeight;
-	private final Button[][] buttons=new Button[X][Y];
+	private final Button[][] buttons = new Button[X][Y];
+	private MineFieldLogic field;
+	TextView topText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final TextView topText = (TextView) findViewById(R.id.topText);
+		topText = (TextView) findViewById(R.id.topText);
 		// topText.setText("Minesweeper Android top text");
 
 		Display display = getWindowManager().getDefaultDisplay();
@@ -34,21 +38,20 @@ public class MainActivity extends Activity {
 		screenWidth = display.getWidth();
 		screenHeight = display.getHeight();
 		topText.setText("screenWidth =" + screenWidth + " screenHeight =" + screenHeight);
-		
-		
-//		buttons=new Button[X][Y];
-		
+		drawMineField();
+
+	}
+
+	public void drawMineField() {
 		TableLayout tl = (TableLayout) findViewById(R.id.tableLayout);
-		
+
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
 			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
-				
-				buttons[x][y]=new Button(this);
-				
-//				final Button button = new Button(this);
-				
+
+				buttons[x][y] = new Button(this);
+
 				buttons[x][y].setWidth(screenWidth / X - 4);
 				buttons[x][y].setHeight(buttons[x][y].getHeight());
 				final int xInner = x;
@@ -59,6 +62,13 @@ public class MainActivity extends Activity {
 						if (!flagButtonPressed) {
 							topText.setText("buttons[" + xInner + "][" + yInner + "] stepped");
 							buttons[xInner][yInner].setText("#");
+							
+							
+							
+							field.step(xInner, yInner);
+							
+							
+							
 						} else {
 							topText.setText("buttons[" + xInner + "][" + yInner + "] flagged");
 							flagButtonPressed = false;
@@ -70,12 +80,6 @@ public class MainActivity extends Activity {
 			}
 			tl.addView(tr);
 		}
-		
-		
-		
-		
-		
-		
 
 		Button newGameButton = (Button) findViewById(R.id.newGameButton);
 		newGameButton.setText("New game");
@@ -118,8 +122,25 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		
-		
+
+	}
+
+	public MineFieldLogic getField() {
+		return field;
+	}
+
+	public void redrawMineField() {
+
+		for (int x = 0; x < X; x++) {
+			for (int y = 0; y < Y; y++) {
+
+				if (field.getCells()[x][y].isShown()) {
+
+					buttons[x][y].setText("+");
+				}
+			}
+		}
+
 	}
 
 	@Override
