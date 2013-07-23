@@ -1,13 +1,15 @@
 package com.daniloff.minesweeper.client;
 
-import com.daniloff.minesweeper.client.field.model.MineFieldLogic;
-import com.daniloff.minesweeper.client.field.view.MineFieldImage;
+import com.daniloff.minesweeper.client.field.model.MineFieldModel;
+import com.daniloff.minesweeper.client.field.model.MineFieldModelImpl;
+import com.daniloff.minesweeper.client.field.view.MineFieldView;
+import com.daniloff.minesweeper.client.field.view.MineFieldViewImpl;
 import com.daniloff.minesweeper.client.settings.GameSettings;
 
 public class Game {
 
-	private MineFieldImage image = new MineFieldImage();
-	private MineFieldLogic field;
+	private MineFieldView image = new MineFieldViewImpl();
+	private MineFieldModel field;
 	private GameSettings gameSettings;
 
 	public Game(GameSettings gameSettings) {
@@ -16,13 +18,13 @@ public class Game {
 
 	public void start(GameSettings gameSettings) {
 		this.gameSettings = getGameSettings();
-		field = new MineFieldLogic(gameSettings);
+		field = new MineFieldModelImpl(gameSettings);
 		image.setField(field);
 		image.setGameSettings(gameSettings);
 		field.setGameSettings(gameSettings);
 		image.drawMineField();
 
-		field.setImage(image);
+		field.setView(image);
 
 	}
 

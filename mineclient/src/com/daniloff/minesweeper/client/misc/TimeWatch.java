@@ -1,18 +1,18 @@
 package com.daniloff.minesweeper.client.misc;
 
-import com.daniloff.minesweeper.client.field.model.MineFieldLogic;
-import com.daniloff.minesweeper.client.field.view.MineFieldImage;
+import com.daniloff.minesweeper.client.field.model.MineFieldModel;
+import com.daniloff.minesweeper.client.field.view.MineFieldView;
 
 public class TimeWatch implements Runnable {
 	private final double EPS = 0.001;
-	private MineFieldImage image;
-	private MineFieldLogic field;
+	private MineFieldView image;
+	private MineFieldModel field;
 
-	public void setField(MineFieldLogic field) {
+	public void setField(MineFieldModel field) {
 		this.field = field;
 	}
 
-	public void setImage(MineFieldImage image) {
+	public void setImage(MineFieldView image) {
 		this.image = image;
 	}
 
@@ -33,10 +33,8 @@ public class TimeWatch implements Runnable {
 			if (field.getTimeGameRemain() <= EPS || field.getTimeMoveRemain() <= EPS) {
 				field.gameOver();
 			}
-			image.getTimeGameRemainTxt().setText(
-					String.format("%s%3.1f", "Time Game Remain: ", field.getTimeGameRemain()));
-			image.getTimeMoveRemainTxt().setText(
-					String.format("%s%3.1f", "Time Move Remain:  ", field.getTimeMoveRemain()));
+			image.setTimeGameRemainTxt(String.format("%s%3.1f", "Time Game Remain: ", field.getTimeGameRemain()));
+			image.setTimeMoveRemainTxt(String.format("%s%3.1f", "Time Move Remain:  ", field.getTimeMoveRemain()));
 		}
 	}
 }

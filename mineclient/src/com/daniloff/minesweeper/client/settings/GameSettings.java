@@ -94,33 +94,27 @@ public class GameSettings {
 	}
 
 	public int getXSize() {
-		// return xSize;
-		return 10;
+		return xSize;
 	}
 
 	public int getYSize() {
-//		return ySize;
-		return 10;
+		return ySize;
 	}
 
 	public int getPauseCount() {
-//		return pauseCount;
-		return 5;
+		return pauseCount;
 	}
 
 	public String getStrategy() {
-//		return strategy;
-	return	"FixedMineCountCreationStrategy";
+		return strategy;
 	}
 
 	public int getMinesCount() {
-//		return minesCount;
-		return 15;
+		return minesCount;
 	}
 
 	public double getMinesProbability() {
-//		return minesProbability;
-		return 0.15;
+		return minesProbability;
 	}
 
 	public Dimension getScreen() {
@@ -136,12 +130,10 @@ public class GameSettings {
 	}
 
 	public double getTimeForMove() {
-//		return timeForMove;
-		return 20.0;
+		return timeForMove;
 	}
 
 	public double getTimeForGame() {
-//		return timeForGame;
-		return 200.0;
+		return timeForGame;
 	}
 }

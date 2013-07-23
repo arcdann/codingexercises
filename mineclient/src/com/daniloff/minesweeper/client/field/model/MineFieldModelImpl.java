@@ -2,20 +2,20 @@ package com.daniloff.minesweeper.client.field.model;
 
 import java.io.IOException;
 
-import com.daniloff.minesweeper.client.field.view.MineFieldImage;
+import com.daniloff.minesweeper.client.field.view.MineFieldView;
 import com.daniloff.minesweeper.client.misc.SoundPlayer;
 import com.daniloff.minesweeper.client.misc.TimeWatch;
 import com.daniloff.minesweeper.client.settings.GameSettings;
 import com.daniloff.minesweeper.serverAPI.Request;
 import com.daniloff.minesweeper.serverAPI.Response;
 
-public class MineFieldLogic implements MineField {
+public class MineFieldModelImpl implements MineFieldModel {
 
 	private static final String GAME_GOES = "Game: Goes";
 	private int xSize;
 	private int ySize;
 	final private Cell[][] cells;
-	private MineFieldImage image;
+	private MineFieldView image;
 	private GameSettings gameSettings;
 	private boolean gameStarted;
 	private boolean gameOver;
@@ -36,7 +36,7 @@ public class MineFieldLogic implements MineField {
 	private Response response;
 	boolean[][] mines;
 
-	public MineFieldLogic(GameSettings gameSettings) {
+	public MineFieldModelImpl(GameSettings gameSettings) {
 		this.xSize = gameSettings.getXSize();
 		this.ySize = gameSettings.getYSize();
 		this.pauseRemain = gameSettings.getPauseCount();
@@ -87,7 +87,7 @@ public class MineFieldLogic implements MineField {
 			}
 		}
 		createConsoleMap();
-		image.getGameProcessTxt().setText(GAME_GOES);
+		image.setGameProcessTxt(GAME_GOES); // interfaced
 		setTimeGameRemain(gameSettings.getTimeForGame());
 		setNoTimeLimit(gameSettings.isNoTimeLimit());
 		if (!noTimeLimit) {
@@ -98,7 +98,7 @@ public class MineFieldLogic implements MineField {
 	private void startTimer() {
 		TimeWatch timeWatch = new TimeWatch();
 		timeWatch.setField(this);
-		timeWatch.setImage(image);
+		timeWatch.setImage(image); // to be interfaced
 		Thread tw = new Thread(timeWatch);
 		tw.setDaemon(true);
 		tw.start();
@@ -119,11 +119,10 @@ public class MineFieldLogic implements MineField {
 		}
 		System.out.println("MineCount: " + mineCount);
 	}
-	
-	
+
 	public String stub() {
 		return "Stub String Return";
-		
+
 	}
 
 	@Override
@@ -134,8 +133,8 @@ public class MineFieldLogic implements MineField {
 		}
 		setTimeMoveRemain(gameSettings.getTimeForMove());
 		if (noTimeLimit) {
-			image.getTimeGameRemainTxt().setText("No gametime limit");
-			image.getTimeMoveRemainTxt().setText("No movetime limit");
+			image.setTimeGameRemainTxt("No gametime limit"); // interfaced
+			image.setTimeMoveRemainTxt("No movetime limit"); // interfaced
 		}
 
 		cells[x][y].setShown(true);
@@ -201,12 +200,12 @@ public class MineFieldLogic implements MineField {
 		checkGameOver();
 	}
 
-	private void showMoveCount() {
-		image.getMoveCountTxt().setText(String.format("%s%2d", "Moves: ", moveCount));
+	private void showMoveCount() { // interfaced
+		image.setMoveCountTxt("%s%2d", "Moves: ", moveCount);
 	}
 
-	private void showFlagsCount() {
-		image.getFlagsCountTxt().setText(String.format("%s%2d", "Flags: ", flagsCount));
+	private void showFlagsCount() { // interfaced
+		image.setFlagsCountTxt("%s%2d", "Flags: ", flagsCount);
 	}
 
 	private void openAdjacentCells(int x, int y) {
@@ -232,7 +231,7 @@ public class MineFieldLogic implements MineField {
 		cells[xBlast][yBlast].setMark(Mark.Blast);
 		sound = "resources/sounds/Blast.au";
 		gameOver();
-		image.getGameProcessTxt().setText("Game: Blasted");
+		image.setGameProcessTxt("Game: Blasted"); // interfaced
 	}
 
 	public void gameOver() {
@@ -252,7 +251,7 @@ public class MineFieldLogic implements MineField {
 		}
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
-			image.getGameProcessTxt().setText("Game: Win!");
+			image.setGameProcessTxt("Game: Win!"); // interfaced
 			sound = "resources/sounds/Win.au";
 		} else {
 			if (sound == null) {
@@ -260,9 +259,9 @@ public class MineFieldLogic implements MineField {
 			}
 		}
 		soundHelper(sound);
-		
+
 		try {
-			image.redrawMineField();
+			image.redrawMineField(); // interfaced
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -287,19 +286,20 @@ public class MineFieldLogic implements MineField {
 		}
 	}
 
+	@Override
 	public void pause() {
 
 		if (!paused) {
 			if (pauseRemain > 0) {
 				paused = true;
 				pauseRemain--;
-				image.getPauseButton().setText("Resume");
+				image.setPauseButtonTxt("Resume"); // interfaced
 				sound = "resources/sounds/Pause.au";
 				soundHelper(sound);
 			}
 		} else {
 			paused = false;
-			image.getPauseButton().setText("Pause (" + pauseRemain + ")");
+			image.setPauseButtonTxt("Pause (" + pauseRemain + ")"); // interfaced
 			sound = "resources/sounds/Pause.au";
 			soundHelper(sound);
 		}
@@ -311,11 +311,12 @@ public class MineFieldLogic implements MineField {
 		sound = null;
 	}
 
-	public MineFieldImage getImage() {
+	public MineFieldView getImage() {
 		return image;
 	}
 
-	public void setImage(MineFieldImage image) {
+	@Override
+	public void setView(MineFieldView image) {
 		this.image = image;
 	}
 
@@ -331,20 +332,20 @@ public class MineFieldLogic implements MineField {
 		return paused;
 	}
 
-	public double getTimeMoveRemain() {
-		return timeMoveRemain;
-	}
-
-	public void setTimeMoveRemain(double timeMoveRemain) {
-		this.timeMoveRemain = timeMoveRemain;
-	}
-
 	public double getTimeGameRemain() {
 		return timeGameRemain;
 	}
 
+	public double getTimeMoveRemain() {
+		return timeMoveRemain;
+	}
+
 	public void setTimeGameRemain(double timeGameRemain) {
 		this.timeGameRemain = timeGameRemain;
+	}
+
+	public void setTimeMoveRemain(double timeMoveRemain) {
+		this.timeMoveRemain = timeMoveRemain;
 	}
 
 	public GameSettings getGameSettings() {
