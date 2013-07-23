@@ -3,6 +3,7 @@ package com.daniloff.minesweeper.client.field.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -47,7 +48,7 @@ public class MineFieldViewImpl extends JFrame implements MineFieldView {
 
 		frameXSize = gameSettings.getXSize() * CELL_SIZE;
 		frameYSize = gameSettings.getYSize() * CELL_SIZE + ADD_HEIGHT;
-		screen = gameSettings.getScreen();
+		screen = Toolkit.getDefaultToolkit().getScreenSize();
 		final JFrame mineField = new JFrame("MineField");
 		mineField.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		mineField.setSize(frameXSize, frameYSize);
@@ -154,7 +155,6 @@ public class MineFieldViewImpl extends JFrame implements MineFieldView {
 					mineField.setVisible(false);
 					stopTimeWatch = true;
 					InviteDialog dialog = new InviteDialog();
-					dialog.setScreen(screen);
 					dialog.init();
 				}
 			}

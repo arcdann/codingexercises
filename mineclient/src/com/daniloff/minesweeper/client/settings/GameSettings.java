@@ -1,6 +1,5 @@
 package com.daniloff.minesweeper.client.settings;
 
-import java.awt.Dimension;
 
 public class GameSettings {
 
@@ -13,7 +12,6 @@ public class GameSettings {
 	private double minesOccurence;
 	private double timeForMove;
 	private double timeForGame;
-	private Dimension screen;
 	private boolean noTimeLimit;
 
 	private final double EPS = 0.1;
@@ -117,16 +115,8 @@ public class GameSettings {
 		return minesProbability;
 	}
 
-	public Dimension getScreen() {
-		return screen;
-	}
-
 	public boolean isNoTimeLimit() {
 		return noTimeLimit;
-	}
-
-	public void setScreen(Dimension screen) {
-		this.screen = screen;
 	}
 
 	public double getTimeForMove() {
