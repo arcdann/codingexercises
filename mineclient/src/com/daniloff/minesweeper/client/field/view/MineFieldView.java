@@ -13,20 +13,24 @@ public interface MineFieldView {
 
 	void setTimeMoveRemainTxt(String string);
 
-	void setMoveCount(int count);
+	void setMoveCountTxt(String format, String string, int count);
 
-	void setFlagsCount(int count);
+	void setFlagsCountTxt(String format, String string, int count);
 
 	void setPauseButtonTxt(String string);
 
 	void redrawMineField() throws IOException;
 
+	// void setImage(MineFieldImage image);
+
 	boolean isStopTimeWatch();
+
+	// void setField(MineField field);
 
 	void setGameSettings(GameSettings gameSettings);
 
-	void drawMineField();
+	public abstract void drawMineField();
 
-	void setField(MineFieldModel field);
+	public abstract void setField(MineFieldModel field);
 
 }

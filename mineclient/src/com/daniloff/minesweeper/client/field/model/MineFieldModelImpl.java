@@ -87,7 +87,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			}
 		}
 		createConsoleMap();
-		image.setGameProcessTxt(GAME_GOES);  
+		image.setGameProcessTxt(GAME_GOES); // interfaced
 		setTimeGameRemain(gameSettings.getTimeForGame());
 		setNoTimeLimit(gameSettings.isNoTimeLimit());
 		if (!noTimeLimit) {
@@ -98,7 +98,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 	private void startTimer() {
 		TimeWatch timeWatch = new TimeWatch();
 		timeWatch.setField(this);
-		timeWatch.setImage(image);  
+		timeWatch.setImage(image); // to be interfaced
 		Thread tw = new Thread(timeWatch);
 		tw.setDaemon(true);
 		tw.start();
@@ -133,8 +133,8 @@ public class MineFieldModelImpl implements MineFieldModel {
 		}
 		setTimeMoveRemain(gameSettings.getTimeForMove());
 		if (noTimeLimit) {
-			image.setTimeGameRemainTxt("No gametime limit");  
-			image.setTimeMoveRemainTxt("No movetime limit");  
+			image.setTimeGameRemainTxt("No gametime limit"); // interfaced
+			image.setTimeMoveRemainTxt("No movetime limit"); // interfaced
 		}
 
 		cells[x][y].setShown(true);
@@ -200,12 +200,12 @@ public class MineFieldModelImpl implements MineFieldModel {
 		checkGameOver();
 	}
 
-	private void showMoveCount() {  
-		image.setMoveCount( moveCount);
+	private void showMoveCount() { // interfaced
+		image.setMoveCountTxt("%s%2d", "Moves: ", moveCount);
 	}
 
-	private void showFlagsCount() {  
-		image.setFlagsCount( flagsCount);
+	private void showFlagsCount() { // interfaced
+		image.setFlagsCountTxt("%s%2d", "Flags: ", flagsCount);
 	}
 
 	private void openAdjacentCells(int x, int y) {
@@ -231,7 +231,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		cells[xBlast][yBlast].setMark(Mark.Blast);
 		sound = "resources/sounds/Blast.au";
 		gameOver();
-		image.setGameProcessTxt("Game: Blasted");  
+		image.setGameProcessTxt("Game: Blasted"); // interfaced
 	}
 
 	public void gameOver() {
@@ -251,7 +251,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		}
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
-			image.setGameProcessTxt("Game: Win!");  
+			image.setGameProcessTxt("Game: Win!"); // interfaced
 			sound = "resources/sounds/Win.au";
 		} else {
 			if (sound == null) {
@@ -261,7 +261,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		soundHelper(sound);
 
 		try {
-			image.redrawMineField();  
+			image.redrawMineField(); // interfaced
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -293,13 +293,13 @@ public class MineFieldModelImpl implements MineFieldModel {
 			if (pauseRemain > 0) {
 				paused = true;
 				pauseRemain--;
-				image.setPauseButtonTxt("Resume");  
+				image.setPauseButtonTxt("Resume"); // interfaced
 				sound = "resources/sounds/Pause.au";
 				soundHelper(sound);
 			}
 		} else {
 			paused = false;
-			image.setPauseButtonTxt("Pause (" + pauseRemain + ")");  
+			image.setPauseButtonTxt("Pause (" + pauseRemain + ")"); // interfaced
 			sound = "resources/sounds/Pause.au";
 			soundHelper(sound);
 		}

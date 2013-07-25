@@ -269,18 +269,26 @@ public class MineFieldViewImpl extends JFrame implements MineFieldView {
 	}
 
 	@Override
-	public void setMoveCount(int count) {
-		moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
+	public void setMoveCountTxt(String format, String string, int count) {
+		moveCountTxt.setText(string);
+
 	}
 
 	@Override
-	public void setFlagsCount(int count) {
-		flagsCountTxt.setText(String.format("%s%2d", "Flags: ", count));
+	public void setFlagsCountTxt(String format, String string, int count) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void setPauseButtonTxt(String string) {
 		pauseButton.setText(string);
+
 	}
 
+//	@Override
+//	public void setImage(MineFieldImage image) {
+//		// TODO Auto-generated method stub
+//
+//	}
 }
