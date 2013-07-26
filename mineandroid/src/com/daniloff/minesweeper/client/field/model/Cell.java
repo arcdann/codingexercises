@@ -30,8 +30,33 @@ public class Cell {
 		this.shown = shown;
 	}
 
-	public Mark getMark() {
-		return mark;
+	public String getMark() {
+		switch (mark) {
+		case NoMines:
+			return ".";
+		case Digit1:
+			return "1";
+		case Digit2:
+			return "2";
+		case Digit3:
+			return "3";
+		case Digit4:
+			return "4";
+		case RedFlag:
+			return "F";
+		case YellowFlag:
+			return "?";
+		case Blast:
+			return "X";
+		case DiscoveredMine:
+			return "#";
+		case Mine:
+			return "*";
+
+		default:
+			return mark.toString();
+		}
+
 	}
 
 	public void setMark(Mark mark) {

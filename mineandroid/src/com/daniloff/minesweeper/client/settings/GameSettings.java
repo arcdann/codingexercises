@@ -23,7 +23,7 @@ public class GameSettings {
 
 		setSizes("Little");
 		setStrategy("FixedMineCountCreationStrategy", "Normal");
-		setTimer("Normal");
+		setTimer("No Limit");
 
 	}
 

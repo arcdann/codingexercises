@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private boolean flagButtonPressed;
 	private int screenWidth;
 	private int screenHeight;
-	private final Button[][] buttons = new Button[X][Y];
+	private final ImageButton[][] buttons = new ImageButton[X][Y];
 	public MineFieldModel field;
 	public GameSettings gameSettings;
 	TextView topText;
@@ -129,10 +130,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
-			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			for (int x = 0; x < X; x++) {
 
-				buttons[x][y] = new Button(this);
+				buttons[x][y] = new ImageButton(this);
 
 				buttons[x][y].setWidth(screenWidth / X - 5);
 				buttons[x][y].setHeight(buttons[x][y].getWidth());
