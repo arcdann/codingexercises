@@ -25,13 +25,13 @@
             <requestFocus />
         </EditText>
 
-        <Button
+        <ImageButton
             android:id="@+id/flagButton"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:text="F" />
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/redflag" />
 
     </LinearLayout>
 
@@ -101,6 +101,7 @@
                 android:layout_gravity="right" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -53,39 +53,39 @@ public class MineFieldModelImpl implements MineFieldModel {
 
 	private void arrangeMines(int xInit, int yInit) {
 
-		// MiningClient client = new MiningClient();
-		// try {
-		// client.connectToServer();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		//
-		// prepareRequest(xInit, yInit);
-		//
-		// client.request = this.request;
-		//
-		// try {
-		// client.outputStream.writeObject(request);
-		// } catch (IOException e1) {
-		// e1.printStackTrace();
-		// }
-		//
-		// try {
-		// response = client.getResponse();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+		 MiningClient client = new MiningClient();
+		 try {
+		 client.connectToServer();
+		 } catch (IOException e) {
+		 e.printStackTrace();
+		 }
+		
+		 prepareRequest(xInit, yInit);
+		
+		 client.request = this.request;
+		
+		 try {
+		 client.outputStream.writeObject(request);
+		 } catch (IOException e1) {
+		 e1.printStackTrace();
+		 }
+		
+		 try {
+		 response = client.getResponse();
+		 } catch (IOException e) {
+		 e.printStackTrace();
+		 }
 
-		// mines = response.getMinedCells();
+		 mines = response.getMinedCells();
 
-		boolean[][] mines = new boolean[xSize][ySize];
-
-		mines[1][2] = true;
-		mines[4][6] = true;
-		mines[5][9] = true;
-		mines[3][3] = true;
-		mines[7][5] = true;
-		mines[8][7] = true;
+//		boolean[][] mines = new boolean[xSize][ySize];
+//
+//		mines[1][2] = true;
+//		mines[4][6] = true;
+//		mines[5][9] = true;
+//		mines[3][3] = true;
+//		mines[7][5] = true;
+//		mines[8][7] = true;
 
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {

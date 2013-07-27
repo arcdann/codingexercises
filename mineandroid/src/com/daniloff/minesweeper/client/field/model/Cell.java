@@ -34,6 +34,8 @@ public class Cell {
 		switch (mark) {
 		case NoMines:
 			return ".";
+		case Blast:
+			return "X";
 		case Digit1:
 			return "1";
 		case Digit2:
@@ -46,17 +48,13 @@ public class Cell {
 			return "F";
 		case YellowFlag:
 			return "?";
-		case Blast:
-			return "X";
-		case DiscoveredMine:
-			return "#";
 		case Mine:
 			return "*";
-
+		case DiscoveredMine:
+			return "#";
 		default:
 			return mark.toString();
 		}
-
 	}
 
 	public void setMark(Mark mark) {

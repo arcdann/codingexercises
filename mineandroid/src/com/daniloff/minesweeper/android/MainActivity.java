@@ -26,19 +26,21 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private boolean flagButtonPressed;
 	private int screenWidth;
 	private int screenHeight;
-	private final ImageButton[][] buttons = new ImageButton[X][Y];
+	private final Button[][] buttons = new Button[X][Y];
 	public MineFieldModel field;
 	public GameSettings gameSettings;
 	TextView topText;
 	TextView gameProcessTxt;
 	OnClickListener listener;
-//	private TextView timeGameRemainTxt;
-//	private TextView timeMoveRemainTxt;
-//	private TextView moveCountTxt;
-//	private TextView flagsCountTxt;
+	// private TextView timeGameRemainTxt;
+	// private TextView timeMoveRemainTxt;
+	// private TextView moveCountTxt;
+	// private TextView flagsCountTxt;
 
 	private Button pauseButton;
 	private boolean stopTimeWatch;
+
+	ImageButton flagButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		screenHeight = metrics.heightPixels;
 		topText.setText("screen " + screenWidth + " x " + screenHeight);
 		listenButton();
-		gameSettings=new GameSettings("Little", "FixedMineCountCreationStrategy", "Normal", "Normal");
+		gameSettings = new GameSettings("Little", "FixedMineCountCreationStrategy", "Normal", "Normal");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
 		drawMineField();
@@ -85,11 +87,12 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			if (!flagButtonPressed) {
 				topText.setText("Flag button pressed");
 				flagButtonPressed = true;
-				v.setBackgroundColor(Color.RED);
+				// v.setBackgroundColor(Color.RED);
+
 			} else {
 				topText.setText("Flag button unpressed");
 				flagButtonPressed = false;
-				v.setBackgroundColor(Color.CYAN);
+//				v.setBackgroundColor(Color.CYAN);
 			}
 			break;
 		}
@@ -109,8 +112,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					// v.setBackgroundColor(Color.BLUE);
 					buttons[x][y].setText("#");
 
-					 field.step(x, y);
-					 redrawMineField();
+					field.step(x, y);
+					redrawMineField();
 					// String stubText = field.stub();
 					// topText.setText(stubText);
 
@@ -130,10 +133,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
-			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
 
-				buttons[x][y] = new ImageButton(this);
+				buttons[x][y] = new Button(this);
 
 				buttons[x][y].setWidth(screenWidth / X - 5);
 				buttons[x][y].setHeight(buttons[x][y].getWidth());
@@ -160,9 +163,14 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		// setPauseButtonTxt("pause");
 		// pauseButton.setOnClickListener(this);
 
-		Button flagButton = (Button) findViewById(R.id.flagButton);
-		flagButton.setText("Flag");
-		flagButton.setBackgroundColor(Color.CYAN);
+		// Button flagButton = (Button) findViewById(R.id.flagButton);
+		// flagButton.setText("Flag");
+		// flagButton.setBackgroundColor(Color.CYAN);
+		// flagButton.setOnClickListener(this);
+
+		// Button button1 = (Button) findViewById(R.id.);
+
+		flagButton = (ImageButton) findViewById(R.id.flagButton);
 		flagButton.setOnClickListener(this);
 
 	}
@@ -183,31 +191,31 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	@Override
 	public void setGameProcessTxt(String gameGoes) {
 		// gameProcessTxt.setText(gameGoes);
-		//gameProcessTxt.setText("gameGoes");
+		// gameProcessTxt.setText("gameGoes");
 	}
 
 	@Override
 	public void setTimeGameRemainTxt(String string) {
 		// timeGameRemainTxt.setText(string);
-		//timeGameRemainTxt.setText("string");
+		// timeGameRemainTxt.setText("string");
 	}
 
 	@Override
 	public void setTimeMoveRemainTxt(String string) {
 		// timeMoveRemainTxt.setText(string);
-		//timeMoveRemainTxt.setText("string");
+		// timeMoveRemainTxt.setText("string");
 	}
 
 	@Override
 	public void setMoveCount(int count) {
 		// moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
-		//moveCountTxt.setText(String.format("%s%2d", "Moves: ", 22));
+		// moveCountTxt.setText(String.format("%s%2d", "Moves: ", 22));
 	}
 
 	@Override
 	public void setFlagsCount(int count) {
 		// flagsCountTxt.setText(String.format("%s%2d", "Flags: ", count));
-		//flagsCountTxt.setText(String.format("%s%2d", "Flags: ", 11));
+		// flagsCountTxt.setText(String.format("%s%2d", "Flags: ", 11));
 	}
 
 	@Override
