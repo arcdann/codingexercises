@@ -20,7 +20,7 @@ public class MiningClient {
 
 	public void connectToServer() throws IOException {
 		// String serverAddress = "localhost";// ************
-		String serverAddress = "192.168.1.16";// ************
+		String serverAddress = "192.168.1.21";// ************
 
 		socket = new Socket(serverAddress, 9898);
 		outputStream = new ObjectOutputStream(socket.getOutputStream());
