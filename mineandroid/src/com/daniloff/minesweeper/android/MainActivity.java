@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -21,12 +23,12 @@ import com.daniloff.minesweeper.client.settings.GameSettings;
 
 public class MainActivity extends Activity implements OnClickListener, MineFieldView {
 
-	private final int X = 10;
-	private final int Y = 10;
+	private int X;
+	private int Y;
 	private boolean flagButtonPressed;
 	private int screenWidth;
 	private int screenHeight;
-	private final Button[][] buttons = new Button[X][Y];
+	private Button[][] buttons;
 	public MineFieldModel field;
 	public GameSettings gameSettings;
 	TextView topText;
@@ -45,6 +47,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		topText = (TextView) findViewById(R.id.topText);
@@ -59,6 +63,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "No Limit");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
+		X = gameSettings.getXSize();
+		Y = gameSettings.getYSize();
+		buttons = new Button[X][Y];
+		topText.setText("X= " + X + " Y= " + Y);
 		drawMineField();
 
 	}
@@ -92,7 +100,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			} else {
 				topText.setText("Flag button unpressed");
 				flagButtonPressed = false;
-//				v.setBackgroundColor(Color.CYAN);
+				// v.setBackgroundColor(Color.CYAN);
 			}
 			break;
 		}
@@ -137,8 +145,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			for (int x = 0; x < X; x++) {
 
 				buttons[x][y] = new Button(this);
-
-				buttons[x][y].setWidth(screenWidth / X - 5);
+				buttons[x][y].setMaxWidth(20);
+				// buttons[x][y].setWidth(20 );
 				buttons[x][y].setHeight(buttons[x][y].getWidth());
 				// buttons[x][y].setBackgroundColor(Color.GREEN);
 				int id = y * 100 + x;

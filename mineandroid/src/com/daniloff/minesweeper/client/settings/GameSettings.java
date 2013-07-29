@@ -21,9 +21,6 @@ public class GameSettings {
 		setStrategy(strategy, occurrence);
 		setTimer(pace);
 
-//		setSizes("Little");
-//		setStrategy("Fixed mines count", "Normal");
-//		setTimer("No Limit");
 	}
 
 	private void setSizes(String fieldSize) {
