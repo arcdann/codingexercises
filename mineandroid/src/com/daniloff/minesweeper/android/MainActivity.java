@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		screenHeight = metrics.heightPixels;
 		topText.setText("screen " + screenWidth + " x " + screenHeight);
 		listenButton();
-		gameSettings = new GameSettings("Little", "FixedMineCountCreationStrategy", "Normal", "Normal");
+		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "No Limit");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
 		drawMineField();

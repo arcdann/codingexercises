@@ -17,13 +17,13 @@ public class GameSettings {
 	private double rate;
 
 	public GameSettings(String fieldSize, String strategy, String occurrence, String pace) {
-//		setSizes(fieldSize);
-//		setStrategy(strategy, occurrence);
-//		setTimer(pace);
+		setSizes(fieldSize);
+		setStrategy(strategy, occurrence);
+		setTimer(pace);
 
-		setSizes("Little");
-		setStrategy("Fixed mines count", "Normal");
-		setTimer("No Limit");
+//		setSizes("Little");
+//		setStrategy("Fixed mines count", "Normal");
+//		setTimer("No Limit");
 	}
 
 	private void setSizes(String fieldSize) {
