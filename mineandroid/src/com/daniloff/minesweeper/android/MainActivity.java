@@ -1,6 +1,7 @@
 package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -8,8 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -28,7 +27,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private boolean flagButtonPressed;
 	private int screenWidth;
 	private int screenHeight;
-	private Button[][] buttons;
+	private ImageButton[][] buttons;
 	public MineFieldModel field;
 	public GameSettings gameSettings;
 	TextView topText;
@@ -41,14 +40,14 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 	private Button pauseButton;
 	private boolean stopTimeWatch;
-
+	private Context mContext;
 	ImageButton flagButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		topText = (TextView) findViewById(R.id.topText);
@@ -65,7 +64,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		field.setView(this);
 		X = gameSettings.getXSize();
 		Y = gameSettings.getYSize();
-		buttons = new Button[X][Y];
+		buttons = new ImageButton[X][Y];
 		topText.setText("X= " + X + " Y= " + Y);
 		drawMineField();
 
@@ -118,7 +117,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					// v.setBackgroundColor(Color.BLUE);
-					buttons[x][y].setText("#");
+					// buttons[x][y].setText("#");
 
 					field.step(x, y);
 					redrawMineField();
@@ -127,7 +126,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
-					buttons[x][y].setText("F");
+					// buttons[x][y].setText("F");
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
 				}
@@ -138,16 +137,18 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	public void drawMineField() {
 
 		TableLayout tl = (TableLayout) findViewById(R.id.tableLayout);
-
+		
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
 			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
 
-				buttons[x][y] = new Button(this);
-				buttons[x][y].setMaxWidth(20);
+				buttons[x][y] = new ImageButton(this);//*************************************
+				ImageButton b = buttons[x][y];
+				b.setImageResource(R.drawable.green);
+				// buttons[x][y].setMaxWidth(20);
 				// buttons[x][y].setWidth(20 );
-				buttons[x][y].setHeight(buttons[x][y].getWidth());
+				// buttons[x][y].setHeight(buttons[x][y].getWidth());
 				// buttons[x][y].setBackgroundColor(Color.GREEN);
 				int id = y * 100 + x;
 				buttons[x][y].setId(id);
@@ -190,7 +191,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				if (field.getCells()[x][y].isShown()) {
 
-					buttons[x][y].setText(field.getCells()[x][y].getMark().toString());
+					// buttons[x][y].setText(field.getCells()[x][y].getMark().toString());
 				}
 			}
 		}
