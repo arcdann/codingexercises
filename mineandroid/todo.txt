@@ -1,0 +1,15 @@
+1. размеры кнопок
+2. высота рядов
+3. изменять 1 и 2 в зависимости от размера поля штоп кнопки помещались в экран
+3. кнопки без интервалов
+4. картинка во всю кнопку
+5. меню или start activity
+6. выбор и сохранение gamesettihgs
+7. text views состояние игры, счотчики
+8. new game, restart, pause buttons
+9. thread timewatch
+10. sound & vibration
+11. users scorecounting
+12. user achievements server database storage
+13. lifes & health purchasing & bonus system
+14. googleplay deploying
