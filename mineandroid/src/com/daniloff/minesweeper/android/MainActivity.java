@@ -123,8 +123,6 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 					field.step(x, y);
 					redrawMineField();
-					// String stubText = field.stub();
-					// topText.setText(stubText);
 
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
@@ -146,12 +144,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
-
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			params.height=105;
-			tr.setLayoutParams(params);
-			// tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-			// LayoutParams.MATCH_PARENT));
+			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
 
 				buttons[x][y] = new ImageButton(this);// *************************************
