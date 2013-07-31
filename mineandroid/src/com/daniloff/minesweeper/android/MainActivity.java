@@ -35,14 +35,14 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	TextView topText;
 	TextView gameProcessTxt;
 	OnClickListener listener;
-	// private TextView timeGameRemainTxt;
-	// private TextView timeMoveRemainTxt;
-	// private TextView moveCountTxt;
-	// private TextView flagsCountTxt;
+	private TextView timeGameRemainTxt;
+	private TextView timeMoveRemainTxt;
+	private TextView moveCountTxt;
+	private TextView flagsCountTxt;
 
 	private Button pauseButton;
 	private boolean stopTimeWatch;
-	private Context mContext;
+	// private Context mContext;
 	ImageButton flagButton;
 
 	@Override
@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		screenHeight = metrics.heightPixels;
 		topText.setText("screen " + screenWidth + " x " + screenHeight);
 		listenButton();
-		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "No Limit");
+		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "Normal");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
 		X = gameSettings.getXSize();
@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					// v.setBackgroundColor(Color.BLUE);
 					// buttons[x][y].setText("#");
-					b.setImageResource(R.drawable.empty);// //////////////////
+					b.setImageResource(R.drawable.empty);
 
 					field.step(x, y);
 					redrawMineField();
@@ -133,6 +133,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					b.setImageResource(R.drawable.redflag);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
+					
+					field.flag(x, y);
+					redrawMineField();
+					
 				}
 			}
 		};
@@ -149,11 +153,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				buttons[x][y] = new ImageButton(this);// *************************************
 				ImageButton b = buttons[x][y];
-				
-				Uri imgUri=Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837505");
-				
-				System.out.println(R.drawable.empty);
-				
+
+				Uri imgUri = Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
 				b.setImageURI(imgUri);
 				int id = y * Y + x;
 				b.setId(id);
@@ -197,8 +198,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				if (field.getCells()[x][y].isShown()) {
 
 					// buttons[x][y].setText(field.getCells()[x][y].getMark().toString());
-					
-//					buttons[x][y].setImageLevel(R.drawable.empty);
+
+					// buttons[x][y].setImageLevel(R.drawable.empty);
 				}
 			}
 		}
@@ -211,27 +212,43 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	}
 
 	@Override
-	public void setTimeGameRemainTxt(String string) {
-		// timeGameRemainTxt.setText(string);
-		// timeGameRemainTxt.setText("string");
+	public void setTimeGameRemainTxt(final String string) {
+		timeGameRemainTxt = (TextView) findViewById(R.id.timeGameRemainTxt);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				timeGameRemainTxt.setText(string);
+			}
+		});
 	}
 
 	@Override
-	public void setTimeMoveRemainTxt(String string) {
-		// timeMoveRemainTxt.setText(string);
-		// timeMoveRemainTxt.setText("string");
+	public void setTimeMoveRemainTxt(final String string) {
+		timeMoveRemainTxt = (TextView) findViewById(R.id.timeMoveRemainTxt);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				timeMoveRemainTxt.setText(string);
+			}
+		});
 	}
 
 	@Override
-	public void setMoveCount(int count) {
-		// moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
-		// moveCountTxt.setText(String.format("%s%2d", "Moves: ", 22));
+	public void setMoveCount(final int count) {
+		moveCountTxt = (TextView) findViewById(R.id.moveCountTxt);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				 moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
+			}
+		});
 	}
 
 	@Override
-	public void setFlagsCount(int count) {
-		// flagsCountTxt.setText(String.format("%s%2d", "Flags: ", count));
-		// flagsCountTxt.setText(String.format("%s%2d", "Flags: ", 11));
+	public void setFlagsCount(final int count) {
+		flagsCountTxt = (TextView) findViewById(R.id.flagsCountTxt);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				flagsCountTxt.setText(String.format("%s%2d", "flags: ", count));
+			}
+		});
 	}
 
 	@Override

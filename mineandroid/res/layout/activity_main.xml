@@ -35,10 +35,22 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/timeMoveRemainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/timeGameRemainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="266dp"
         android:layout_gravity="fill"
         android:layout_marginBottom="1dp"
         android:layout_marginLeft="1dp"
@@ -62,13 +74,13 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textViewMoves"
+                android:id="@+id/moveCountTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/textViewFlags"
+                android:id="@+id/flagsCountTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

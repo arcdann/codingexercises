@@ -35,17 +35,19 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout=0x7f080000;
-        public static final int action_settings=0x7f08000c;
+        public static final int action_settings=0x7f08000e;
         public static final int flagButton=0x7f080002;
-        public static final int linearLayoutBottom=0x7f080004;
-        public static final int linearLayoutH=0x7f080008;
-        public static final int linearLayoutV=0x7f080005;
-        public static final int newGameButton=0x7f080009;
-        public static final int pauseButton=0x7f08000b;
-        public static final int restartButton=0x7f08000a;
-        public static final int tableLayout=0x7f080003;
-        public static final int textViewFlags=0x7f080007;
-        public static final int textViewMoves=0x7f080006;
+        public static final int flagsCountTxt=0x7f080009;
+        public static final int linearLayoutBottom=0x7f080006;
+        public static final int linearLayoutH=0x7f08000a;
+        public static final int linearLayoutV=0x7f080007;
+        public static final int moveCountTxt=0x7f080008;
+        public static final int newGameButton=0x7f08000b;
+        public static final int pauseButton=0x7f08000d;
+        public static final int restartButton=0x7f08000c;
+        public static final int tableLayout=0x7f080005;
+        public static final int timeGameRemainTxt=0x7f080004;
+        public static final int timeMoveRemainTxt=0x7f080003;
         public static final int topText=0x7f080001;
     }
     public static final class layout {

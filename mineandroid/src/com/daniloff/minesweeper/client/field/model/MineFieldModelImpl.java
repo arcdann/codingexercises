@@ -78,15 +78,6 @@ public class MineFieldModelImpl implements MineFieldModel {
 
 		 mines = response.getMinedCells();
 
-//		boolean[][] mines = new boolean[xSize][ySize];
-//
-//		mines[1][2] = true;
-//		mines[4][6] = true;
-//		mines[5][9] = true;
-//		mines[3][3] = true;
-//		mines[7][5] = true;
-//		mines[8][7] = true;
-
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
 				cells[x][y].setMined(mines[x][y]);
