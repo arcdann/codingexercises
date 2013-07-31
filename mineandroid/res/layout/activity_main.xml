@@ -47,6 +47,12 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+    <TextView
+        android:id="@+id/gameProcessTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"

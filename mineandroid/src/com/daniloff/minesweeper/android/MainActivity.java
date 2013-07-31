@@ -1,7 +1,6 @@
 package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.daniloff.minesweeper.android.R.drawable;
 import com.daniloff.minesweeper.client.field.model.MineFieldModel;
 import com.daniloff.minesweeper.client.field.model.MineFieldModelImpl;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
@@ -32,9 +30,9 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private ImageButton[][] buttons;
 	public MineFieldModel field;
 	public GameSettings gameSettings;
-	TextView topText;
-	TextView gameProcessTxt;
-	OnClickListener listener;
+	private TextView topText;
+	private TextView gameProcessTxt;
+	private OnClickListener listener;
 	private TextView timeGameRemainTxt;
 	private TextView timeMoveRemainTxt;
 	private TextView moveCountTxt;
@@ -43,7 +41,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private Button pauseButton;
 	private boolean stopTimeWatch;
 	// private Context mContext;
-	ImageButton flagButton;
+	private ImageButton flagButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		screenHeight = metrics.heightPixels;
 		topText.setText("screen " + screenWidth + " x " + screenHeight);
 		listenButton();
-		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "Normal");
+		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "No limit");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
 		X = gameSettings.getXSize();
@@ -133,10 +131,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					b.setImageResource(R.drawable.redflag);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
-					
+
 					field.flag(x, y);
 					redrawMineField();
-					
+
 				}
 			}
 		};
@@ -148,7 +146,12 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
-			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			params.height=105;
+			tr.setLayoutParams(params);
+			// tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+			// LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
 
 				buttons[x][y] = new ImageButton(this);// *************************************
@@ -206,9 +209,13 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	}
 
 	@Override
-	public void setGameProcessTxt(String gameGoes) {
-		// gameProcessTxt.setText(gameGoes);
-		// gameProcessTxt.setText("gameGoes");
+	public void setGameProcessTxt(final String gameGoes) {
+		gameProcessTxt = (TextView) findViewById(R.id.gameProcessTxt);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				gameProcessTxt.setText(gameGoes);
+			}
+		});
 	}
 
 	@Override
@@ -236,7 +243,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		moveCountTxt = (TextView) findViewById(R.id.moveCountTxt);
 		runOnUiThread(new Runnable() {
 			public void run() {
-				 moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
+				moveCountTxt.setText(String.format("%s%2d", "Moves: ", count));
 			}
 		});
 	}
@@ -259,8 +266,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 	@Override
 	public boolean isStopTimeWatch() {
-		// return stopTimeWatch;
-		return false;
+		return stopTimeWatch;
+		// return false;
 	}
 
 	@Override
