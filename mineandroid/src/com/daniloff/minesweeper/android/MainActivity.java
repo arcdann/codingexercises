@@ -112,12 +112,14 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			@Override
 			public void onClick(View v) {
 				int id = v.getId();
-				int x = id % 100;
-				int y = (id - x) / 100;
+				int x = id % Y;
+				int y = (id - x) / Y;
+				ImageButton b = (ImageButton) v;
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					// v.setBackgroundColor(Color.BLUE);
 					// buttons[x][y].setText("#");
+					b.setImageResource(R.drawable.empty);// //////////////////
 
 					field.step(x, y);
 					redrawMineField();
@@ -126,7 +128,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
-					// buttons[x][y].setText("F");
+					b.setImageResource(R.drawable.redflag);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
 				}
@@ -137,23 +139,23 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	public void drawMineField() {
 
 		TableLayout tl = (TableLayout) findViewById(R.id.tableLayout);
-		
+
 		for (int y = 0; y < Y; y++) {
 			TableRow tr = new TableRow(this);
 			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
 
-				buttons[x][y] = new ImageButton(this);//*************************************
+				buttons[x][y] = new ImageButton(this);// *************************************
 				ImageButton b = buttons[x][y];
-				b.setImageResource(R.drawable.green);
+				b.setImageResource(R.drawable.nonchecked);
 				// buttons[x][y].setMaxWidth(20);
 				// buttons[x][y].setWidth(20 );
 				// buttons[x][y].setHeight(buttons[x][y].getWidth());
 				// buttons[x][y].setBackgroundColor(Color.GREEN);
-				int id = y * 100 + x;
-				buttons[x][y].setId(id);
-				buttons[x][y].setOnClickListener(listener);
-				tr.addView(buttons[x][y]);
+				int id = y * Y + x;
+				b.setId(id);
+				b.setOnClickListener(listener);
+				tr.addView(b);
 			}
 			tl.addView(tr);
 		}

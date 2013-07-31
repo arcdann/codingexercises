@@ -93,7 +93,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 				if (cells[x][y].isMined())
 					cells[x][y].setMark(Mark.Mine);
 				else
-					cells[x][y].setMark(Mark.NoMines);
+					cells[x][y].setMark(Mark.empty);
 			}
 		}
 		createConsoleMap();
@@ -154,7 +154,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		if (!cells[x][y].isMined()) {
 			int minesAround = countMinesAround(x, y);
 			if (minesAround == 0)
-				cells[x][y].setMark(Mark.NoMines);
+				cells[x][y].setMark(Mark.empty);
 
 			else
 				cells[x][y].setMark(Mark.valueOf(minesAround));
@@ -187,7 +187,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			moveCount++;
 			flagsCount++;
 			cells[x][y].setFlagged(true);
-			cells[x][y].setMark(Mark.RedFlag);
+			cells[x][y].setMark(Mark.red_flag);
 			if (cells[x][y].isMined()) {
 				correctFlags++;
 			} else {
@@ -196,7 +196,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 
 		} else {
 			cells[x][y].setFlagged(false);
-			cells[x][y].setMark(Mark.YellowFlag);
+			cells[x][y].setMark(Mark.yellow_flag);
 			moveCount--;
 			flagsCount--;
 			if (cells[x][y].isMined()) {
@@ -226,7 +226,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 				if (i >= 0 && i < xSize && j >= 0 && j < ySize) {
 					int minesAround = countMinesAround(i, j);
 					if (minesAround == 0 && !cells[i][j].isShown()) {
-						cells[i][j].setMark(Mark.NoMines);
+						cells[i][j].setMark(Mark.empty);
 						cells[i][j].setShown(true);
 						openAdjacentCells(i, j);
 					}
@@ -240,7 +240,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 	}
 
 	private void gameOver(int xBlast, int yBlast) {
-		cells[xBlast][yBlast].setMark(Mark.Blast);
+		cells[xBlast][yBlast].setMark(Mark.blasted);
 		sound = "resources/sounds/Blast.au";
 		gameOver();
 		image.setGameProcessTxt("Game: Blasted");
@@ -252,7 +252,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			for (int y = 0; y < ySize; y++) {
 				if (cells[x][y].isMined()) {
 					if (cells[x][y].isFlagged()) {
-						cells[x][y].setMark(Mark.DiscoveredMine);
+						cells[x][y].setMark(Mark.discovered_mine);
 						cells[x][y].setShown(true);
 					} else {
 						cells[x][y].setMark(Mark.Mine);

@@ -1,13 +1,13 @@
 package com.daniloff.minesweeper.client.field.model;
 
 public enum Mark {
-	Mine, NoMines, RedFlag, YellowFlag, DiscoveredMine, Blast, Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8;
+	Mine, empty, red_flag, yellow_flag, discovered_mine, blasted, digit_one, digit_two, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8;
 
 	public static Mark valueOf(int digit) {
 		if (digit == 1) {
-			return Mark.Digit1;
+			return Mark.digit_one;
 		} else if (digit == 2) {
-			return Mark.Digit2;
+			return Mark.digit_two;
 		} else if (digit == 3) {
 			return Mark.Digit3;
 		} else if (digit == 4) {
