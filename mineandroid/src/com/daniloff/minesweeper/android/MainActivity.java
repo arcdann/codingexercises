@@ -3,6 +3,7 @@ package com.daniloff.minesweeper.android;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.daniloff.minesweeper.android.R.drawable;
 import com.daniloff.minesweeper.client.field.model.MineFieldModel;
 import com.daniloff.minesweeper.client.field.model.MineFieldModelImpl;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
@@ -147,11 +149,12 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				buttons[x][y] = new ImageButton(this);// *************************************
 				ImageButton b = buttons[x][y];
-				b.setImageResource(R.drawable.nonchecked);
-				// buttons[x][y].setMaxWidth(20);
-				// buttons[x][y].setWidth(20 );
-				// buttons[x][y].setHeight(buttons[x][y].getWidth());
-				// buttons[x][y].setBackgroundColor(Color.GREEN);
+				
+				Uri imgUri=Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837505");
+				
+				System.out.println(R.drawable.empty);
+				
+				b.setImageURI(imgUri);
 				int id = y * Y + x;
 				b.setId(id);
 				b.setOnClickListener(listener);
@@ -194,6 +197,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				if (field.getCells()[x][y].isShown()) {
 
 					// buttons[x][y].setText(field.getCells()[x][y].getMark().toString());
+					
+//					buttons[x][y].setImageLevel(R.drawable.empty);
 				}
 			}
 		}

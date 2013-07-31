@@ -91,7 +91,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			for (int y = 0; y < ySize; y++) {
 				cells[x][y].setMined(mines[x][y]);
 				if (cells[x][y].isMined())
-					cells[x][y].setMark(Mark.Mine);
+					cells[x][y].setMark(Mark.mine);
 				else
 					cells[x][y].setMark(Mark.empty);
 			}
@@ -255,7 +255,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 						cells[x][y].setMark(Mark.discovered_mine);
 						cells[x][y].setShown(true);
 					} else {
-						cells[x][y].setMark(Mark.Mine);
+						cells[x][y].setMark(Mark.mine);
 						cells[x][y].setShown(true);
 					}
 				}

@@ -11,15 +11,15 @@ public class FilenameResolver {
 	static {
 		MARK_TO_FILENAME.put(Mark.digit_one, "resources/images/1_25.png");
 		MARK_TO_FILENAME.put(Mark.digit_two, "resources/images/2_25.png");
-		MARK_TO_FILENAME.put(Mark.Digit3, "resources/images/3_25.png");
-		MARK_TO_FILENAME.put(Mark.Digit4, "resources/images/4_25.png");
+		MARK_TO_FILENAME.put(Mark.digit_three, "resources/images/3_25.png");
+		MARK_TO_FILENAME.put(Mark.digit_four, "resources/images/4_25.png");
 		MARK_TO_FILENAME.put(Mark.Digit5, "resources/images/5_25.png");
 		MARK_TO_FILENAME.put(Mark.Digit6, "resources/images/6_25.png");
 		MARK_TO_FILENAME.put(Mark.Digit7, "resources/images/7_25.png");
 		MARK_TO_FILENAME.put(Mark.Digit8, "resources/images/8_25.png");
 
 		MARK_TO_FILENAME.put(Mark.blasted, "resources/images/Blast_25.png");
-		MARK_TO_FILENAME.put(Mark.Mine, "resources/images/Mine_25.png");
+		MARK_TO_FILENAME.put(Mark.mine, "resources/images/Mine_25.png");
 		MARK_TO_FILENAME.put(Mark.discovered_mine, "resources/images/DiscoveredMine_25.png");
 		MARK_TO_FILENAME.put(Mark.empty, "resources/images/NoMines_25.png");
 		MARK_TO_FILENAME.put(Mark.red_flag, "resources/images/Redflag_25.png");
