@@ -15,10 +15,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.daniloff.minesweeper.android.R.drawable;
+import com.daniloff.minesweeper.client.field.model.Mark;
 import com.daniloff.minesweeper.client.field.model.MineFieldModel;
 import com.daniloff.minesweeper.client.field.model.MineFieldModelImpl;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
 import com.daniloff.minesweeper.client.settings.GameSettings;
+import com.daniloff.minesweeper.client.settings.ResourceResolver;
 
 public class MainActivity extends Activity implements OnClickListener, MineFieldView {
 
@@ -43,6 +46,16 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	// private Context mContext;
 	private ImageButton flagButton;
 
+	// private int green=R.drawable.green;
+	// private int empty=R.drawable.empty;
+	// private int one=R.drawable.one;
+	// private int two=R.drawable.two;
+	// private int three=R.drawable.three;
+	// private int four=R.drawable.four;
+	// private int redflag=R.drawable.redflag;
+	// private int yelloflag=R.drawable.yellowflag;
+	// private int blasted=R.drawable.blasted;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +72,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 		screenHeight = metrics.heightPixels;
 		topText.setText("screen " + screenWidth + " x " + screenHeight);
 		listenButton();
-		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "No limit");
+		gameSettings = new GameSettings("Normal", "Fixed mines count", "Normal", "Normal");
 		field = new MineFieldModelImpl(gameSettings);
 		field.setView(this);
 		X = gameSettings.getXSize();
@@ -119,14 +132,17 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					// v.setBackgroundColor(Color.BLUE);
 					// buttons[x][y].setText("#");
-					b.setBackgroundResource(R.drawable.empty);
-					b.setImageResource(R.drawable.one);
+					// b.setBackgroundResource(empty);
+					// b.setImageResource(R.drawable.one);
 					field.step(x, y);
 					redrawMineField();
 
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
-					b.setBackgroundResource(R.drawable.one);
+					
+					Mark mark = field.getCells()[x][y].getMark();
+					int res =ResourceResolver.MARK_TO_INT.get(mark);
+					b.setBackgroundResource(res);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
 
@@ -148,16 +164,18 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			for (int x = 0; x < X; x++) {
 
 				buttons[x][y] = new ImageButton(this);// *************************************
-				ImageButton b = buttons[x][y]; 
-//				 Uri imgUri =		Uri.parse("android.resource://com.daniloff.minesweeper.android/R.drawable.empty");
-//				// Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
-//				 b.setImageURI(imgUri);
+				ImageButton b = buttons[x][y];
+				// Uri imgUri =
+				// Uri.parse("android.resource://com.daniloff.minesweeper.android/R.drawable.empty");
+				// //
+				// Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
+				// b.setImageURI(imgUri);
 				int id = y * Y + x;
 				b.setId(id);
 				b.setOnClickListener(listener);
-	//			int d=Integer.parseInt("2130837509");
-					//	R.drawable.green;
-				
+				// int d=Integer.parseInt("2130837509");
+				// R.drawable.green;
+
 				b.setBackgroundResource(R.drawable.green);
 				// b.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				// 0));
@@ -199,9 +217,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				if (field.getCells()[x][y].isShown()) {
 
-					// buttons[x][y].setText(field.getCells()[x][y].getMark().toString());
-
-					// buttons[x][y].setImageLevel(R.drawable.empty);
+					Mark mark = field.getCells()[x][y].getMark();
+					int res =ResourceResolver.MARK_TO_INT.get(mark);
+//					int res =R.drawable.empty;
+					buttons[x][y].setBackgroundResource(res);
 				}
 			}
 		}

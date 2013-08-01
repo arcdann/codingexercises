@@ -30,8 +30,8 @@ public class Cell {
 		this.shown = shown;
 	}
 
-	public String getMark() {
-			return mark.toString();
+	public Mark getMark() {
+			return mark;
 	}
 
 	public void setMark(Mark mark) {

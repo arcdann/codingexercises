@@ -121,11 +121,6 @@ public class MineFieldModelImpl implements MineFieldModel {
 		System.out.println("X: "+xSize+" Y: "+ySize+" Mines: " + mineCount);
 	}
 
-	public String stub() {
-		return "Stub String Return";
-
-	}
-
 	@Override
 	public void step(int x, int y) {
 		if (!gameStarted) {
