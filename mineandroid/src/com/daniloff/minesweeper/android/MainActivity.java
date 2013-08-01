@@ -119,14 +119,14 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					// v.setBackgroundColor(Color.BLUE);
 					// buttons[x][y].setText("#");
-					b.setImageResource(R.drawable.empty);
-
+					b.setBackgroundResource(R.drawable.empty);
+					b.setImageResource(R.drawable.one);
 					field.step(x, y);
 					redrawMineField();
 
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
-					b.setImageResource(R.drawable.redflag);
+					b.setBackgroundResource(R.drawable.one);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
 
@@ -148,13 +148,19 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			for (int x = 0; x < X; x++) {
 
 				buttons[x][y] = new ImageButton(this);// *************************************
-				ImageButton b = buttons[x][y];
-
-				Uri imgUri = Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
-				b.setImageURI(imgUri);
+				ImageButton b = buttons[x][y]; 
+//				 Uri imgUri =		Uri.parse("android.resource://com.daniloff.minesweeper.android/R.drawable.empty");
+//				// Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
+//				 b.setImageURI(imgUri);
 				int id = y * Y + x;
 				b.setId(id);
 				b.setOnClickListener(listener);
+	//			int d=Integer.parseInt("2130837509");
+					//	R.drawable.green;
+				
+				b.setBackgroundResource(R.drawable.green);
+				// b.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				// 0));
 				tr.addView(b);
 			}
 			tl.addView(tr);

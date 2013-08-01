@@ -109,7 +109,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		for (int y = 0; y < ySize; y++) {
 			for (int x = 0; x < xSize; x++) {
 				if (cells[x][y].isMined()) {
-					System.out.print("I" + "O");
+					System.out.print("I" + "o");
 					mineCount++;
 				} else {
 					System.out.print("I ");
@@ -118,7 +118,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			System.out.print("I");
 			System.out.println();
 		}
-		System.out.println("MineCount: " + mineCount);
+		System.out.println("X: "+xSize+" Y: "+ySize+" Mines: " + mineCount);
 	}
 
 	public String stub() {
