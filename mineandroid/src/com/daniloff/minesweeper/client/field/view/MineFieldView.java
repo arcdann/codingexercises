@@ -21,6 +21,8 @@ public interface MineFieldView {
 
 	void redrawMineField() throws IOException;
 
+	void redrawButton(int x, int y);
+
 	boolean isStopTimeWatch();
 
 	void setGameSettings(GameSettings gameSettings);

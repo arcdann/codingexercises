@@ -2,6 +2,7 @@ package com.daniloff.minesweeper.client.field.model;
 
 import java.io.IOException;
 
+import com.daniloff.minesweeper.android.MainActivity;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
 import com.daniloff.minesweeper.client.misc.SoundPlayer;
 import com.daniloff.minesweeper.client.misc.TimeWatch;
@@ -53,30 +54,30 @@ public class MineFieldModelImpl implements MineFieldModel {
 
 	private void arrangeMines(int xInit, int yInit) {
 
-		 MiningClient client = new MiningClient();
-		 try {
-		 client.connectToServer();
-		 } catch (IOException e) {
-		 e.printStackTrace();
-		 }
-		
-		 prepareRequest(xInit, yInit);
-		
-		 client.request = this.request;
-		
-		 try {
-		 client.outputStream.writeObject(request);
-		 } catch (IOException e1) {
-		 e1.printStackTrace();
-		 }
-		
-		 try {
-		 response = client.getResponse();
-		 } catch (IOException e) {
-		 e.printStackTrace();
-		 }
+		MiningClient client = new MiningClient();
+		try {
+			client.connectToServer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		 mines = response.getMinedCells();
+		prepareRequest(xInit, yInit);
+
+		client.request = this.request;
+
+		try {
+			client.outputStream.writeObject(request);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
+			response = client.getResponse();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		mines = response.getMinedCells();
 
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
@@ -118,7 +119,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 			System.out.print("I");
 			System.out.println();
 		}
-		System.out.println("X: "+xSize+" Y: "+ySize+" Mines: " + mineCount);
+		System.out.println("X: " + xSize + " Y: " + ySize + " Mines: " + mineCount);
 	}
 
 	@Override
@@ -146,6 +147,12 @@ public class MineFieldModelImpl implements MineFieldModel {
 				cells[x][y].setMark(Mark.valueOf(minesAround));
 			if (minesAround == 0) {
 				openAdjacentCells(x, y);
+//				try {
+//					image.redrawMineField();
+//				} catch (IOException e) {
+//					System.out.println("Can't redraw minefield");
+//					e.printStackTrace();
+//				}
 			}
 		} else {
 			gameOver(x, y);
@@ -215,10 +222,12 @@ public class MineFieldModelImpl implements MineFieldModel {
 						cells[i][j].setMark(Mark.empty);
 						cells[i][j].setShown(true);
 						openAdjacentCells(i, j);
+						image.redrawButton(i, j);
 					}
 					if (countMinesAround(i, j) != 0) {
 						cells[i][j].setMark(Mark.valueOf(minesAround));
 						cells[i][j].setShown(true);
+						image.redrawButton(i, j);
 					}
 				}
 			}

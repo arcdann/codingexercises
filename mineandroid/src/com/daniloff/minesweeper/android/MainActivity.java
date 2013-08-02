@@ -2,7 +2,6 @@ package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.daniloff.minesweeper.android.R.drawable;
 import com.daniloff.minesweeper.client.field.model.Mark;
 import com.daniloff.minesweeper.client.field.model.MineFieldModel;
 import com.daniloff.minesweeper.client.field.model.MineFieldModelImpl;
@@ -43,18 +41,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 	private Button pauseButton;
 	private boolean stopTimeWatch;
-	// private Context mContext;
 	private ImageButton flagButton;
-
-	// private int green=R.drawable.green;
-	// private int empty=R.drawable.empty;
-	// private int one=R.drawable.one;
-	// private int two=R.drawable.two;
-	// private int three=R.drawable.three;
-	// private int four=R.drawable.four;
-	// private int redflag=R.drawable.redflag;
-	// private int yelloflag=R.drawable.yellowflag;
-	// private int blasted=R.drawable.blasted;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,25 +117,20 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				ImageButton b = (ImageButton) v;
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
-					// v.setBackgroundColor(Color.BLUE);
-					// buttons[x][y].setText("#");
-					// b.setBackgroundResource(empty);
-					// b.setImageResource(R.drawable.one);
 					field.step(x, y);
-					redrawMineField();
-
+					// redrawMineField();////////////////////////////////////////////////////////////////
+					redrawButton(x, y);
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
-					
+
 					Mark mark = field.getCells()[x][y].getMark();
-					int res =ResourceResolver.MARK_TO_INT.get(mark);
+					int res = ResourceResolver.MARK_TO_INT.get(mark);
 					b.setBackgroundResource(res);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
 
 					field.flag(x, y);
-					redrawMineField();
-
+					redrawButton(x, y);
 				}
 			}
 		};
@@ -210,20 +192,24 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 	}
 
-	public void redrawMineField() {
+	public void redrawButton(int x, int y) {
+		buttons[x][y].setBackgroundResource(defineResource(x, y));
+	}
 
+	public void redrawMineField() {
 		for (int x = 0; x < X; x++) {
 			for (int y = 0; y < Y; y++) {
-
 				if (field.getCells()[x][y].isShown()) {
-
-					Mark mark = field.getCells()[x][y].getMark();
-					int res =ResourceResolver.MARK_TO_INT.get(mark);
-//					int res =R.drawable.empty;
-					buttons[x][y].setBackgroundResource(res);
+					buttons[x][y].setBackgroundResource(defineResource(x, y));
 				}
 			}
 		}
+	}
+
+	public int defineResource(int x, int y) {
+		Mark mark = field.getCells()[x][y].getMark();
+		int res = ResourceResolver.MARK_TO_INT.get(mark);
+		return res;
 	}
 
 	@Override
