@@ -6,14 +6,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.daniloff.minesweeper.serverAPI.Request;
 import com.daniloff.minesweeper.serverAPI.Response;
 
 public class ServerBootstrap {
+	
+	public static SimpleDateFormat format = new SimpleDateFormat("[dd.MM.YYYY HH:mm:ss]");
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Server console: The server is running");
+		
+		System.out.println(putTimeStamp()+" The server is running");
 		int clientNumber = 0;
 		ServerSocket listener = new ServerSocket(9898);
 		try {
@@ -23,6 +28,11 @@ public class ServerBootstrap {
 		} finally {
 			listener.close();
 		}
+	}
+	
+	public static String putTimeStamp(){
+		long time = System.currentTimeMillis();
+		return(format.format(new Date(time)));
 	}
 
 	private static class MineLayer extends Thread {
@@ -73,7 +83,7 @@ public class ServerBootstrap {
 		}
 
 		private void log(String message) {
-			System.out.println("Server log: " + message);
+			System.out.println(putTimeStamp()+" Server log: " + message);
 		}
 	}
 }

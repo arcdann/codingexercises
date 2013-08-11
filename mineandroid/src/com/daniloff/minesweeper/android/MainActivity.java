@@ -2,6 +2,7 @@ package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -114,12 +115,18 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				int id = v.getId();
 				int x = id % Y;
 				int y = (id - x) / Y;
+
+				new Thread() {
+					public void run() {
+						MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win);
+						mp.start();
+					}
+				}.start();
+
 				ImageButton b = (ImageButton) v;
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					field.step(x, y);
-					// redrawMineField();////////////////////////////////////////////////////////////////
-					redrawButton(x, y);
 				} else {
 					topText.setText("buttons[" + x + "][" + y + "] flagged");
 
@@ -128,10 +135,9 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 					b.setBackgroundResource(res);
 					flagButtonPressed = false;
 					findViewById(R.id.flagButton).setBackgroundColor(Color.CYAN);
-
 					field.flag(x, y);
-					redrawButton(x, y);
 				}
+				redrawButton(x, y);
 			}
 		};
 	}
@@ -147,20 +153,11 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 
 				buttons[x][y] = new ImageButton(this);// *************************************
 				ImageButton b = buttons[x][y];
-				// Uri imgUri =
-				// Uri.parse("android.resource://com.daniloff.minesweeper.android/R.drawable.empty");
-				// //
-				// Uri.parse("android.resource://com.daniloff.minesweeper.android/2130837509");
-				// b.setImageURI(imgUri);
 				int id = y * Y + x;
 				b.setId(id);
 				b.setOnClickListener(listener);
-				// int d=Integer.parseInt("2130837509");
-				// R.drawable.green;
 
-				b.setBackgroundResource(R.drawable.green);
-				// b.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				// 0));
+				b.setBackgroundResource(R.drawable.nonchecked);
 				tr.addView(b);
 			}
 			tl.addView(tr);
@@ -197,13 +194,26 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	}
 
 	public void redrawMineField() {
-		for (int x = 0; x < X; x++) {
-			for (int y = 0; y < Y; y++) {
-				if (field.getCells()[x][y].isShown()) {
-					buttons[x][y].setBackgroundResource(defineResource(x, y));
+		
+		runOnUiThread(new Runnable() {
+			public void run() {
+
+
+				for (int x = 0; x < X; x++) {
+					for (int y = 0; y < Y; y++) {
+						if (field.getCells()[x][y].isShown()) {
+							buttons[x][y].setBackgroundResource(defineResource(x, y));
+						}
+					}
 				}
+				
+				
 			}
-		}
+		});
+		
+		
+		
+		
 	}
 
 	public int defineResource(int x, int y) {

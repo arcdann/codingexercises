@@ -2,7 +2,6 @@ package com.daniloff.minesweeper.client.field.model;
 
 import java.io.IOException;
 
-import com.daniloff.minesweeper.android.MainActivity;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
 import com.daniloff.minesweeper.client.misc.SoundPlayer;
 import com.daniloff.minesweeper.client.misc.TimeWatch;
@@ -270,6 +269,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 		try {
 			image.redrawMineField();
 		} catch (IOException e) {
+			System.out.println("XXXXXXXXXXXXXXXXXX");
 			e.printStackTrace();
 		}
 	}
