@@ -31,4 +31,8 @@ public interface MineFieldView {
 
 	void setField(MineFieldModel field);
 
+	void vibrate(int duration);
+
+	void playSound(int soundRes);
+
 }

@@ -1,9 +1,11 @@
 package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
@@ -116,14 +118,11 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				int x = id % Y;
 				int y = (id - x) / Y;
 
-				new Thread() {
-					public void run() {
-						MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win);
-						mp.start();
-					}
-				}.start();
+				// sound
 
 				ImageButton b = (ImageButton) v;
+				if (field.isGameOver())
+					return;
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");
 					field.step(x, y);
@@ -150,13 +149,11 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			TableRow tr = new TableRow(this);
 			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			for (int x = 0; x < X; x++) {
-
-				buttons[x][y] = new ImageButton(this);// *************************************
+				buttons[x][y] = new ImageButton(this);
 				ImageButton b = buttons[x][y];
 				int id = y * Y + x;
 				b.setId(id);
 				b.setOnClickListener(listener);
-
 				b.setBackgroundResource(R.drawable.nonchecked);
 				tr.addView(b);
 			}
@@ -194,11 +191,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	}
 
 	public void redrawMineField() {
-		
 		runOnUiThread(new Runnable() {
 			public void run() {
-
-
 				for (int x = 0; x < X; x++) {
 					for (int y = 0; y < Y; y++) {
 						if (field.getCells()[x][y].isShown()) {
@@ -206,20 +200,33 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 						}
 					}
 				}
-				
-				
 			}
 		});
-		
-		
-		
-		
 	}
 
 	public int defineResource(int x, int y) {
 		Mark mark = field.getCells()[x][y].getMark();
 		int res = ResourceResolver.MARK_TO_INT.get(mark);
 		return res;
+	}
+
+	public void vibrate(final int duration) {
+		new Thread() {
+			public void run() {
+				String vibratorService = Context.VIBRATOR_SERVICE;
+				Vibrator vibr = (Vibrator) getSystemService(vibratorService);
+				vibr.vibrate(duration);
+			}
+		}.start();
+	}
+
+	public void playSound(final int soundRes) {
+		new Thread() {
+			public void run() {
+				MediaPlayer mp = MediaPlayer.create(getApplicationContext(), soundRes);
+				mp.start();
+			}
+		}.start();
 	}
 
 	@Override

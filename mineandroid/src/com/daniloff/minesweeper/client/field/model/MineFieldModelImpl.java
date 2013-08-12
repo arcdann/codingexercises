@@ -2,6 +2,7 @@ package com.daniloff.minesweeper.client.field.model;
 
 import java.io.IOException;
 
+import com.daniloff.minesweeper.android.R;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
 import com.daniloff.minesweeper.client.misc.SoundPlayer;
 import com.daniloff.minesweeper.client.misc.TimeWatch;
@@ -31,6 +32,8 @@ public class MineFieldModelImpl implements MineFieldModel {
 	private int moveCount;
 	private boolean noTimeLimit;
 	private String sound;
+	private int soundRes;
+	private int vibrDuration = 100;
 
 	private Request request;
 	private Response response;
@@ -146,12 +149,12 @@ public class MineFieldModelImpl implements MineFieldModel {
 				cells[x][y].setMark(Mark.valueOf(minesAround));
 			if (minesAround == 0) {
 				openAdjacentCells(x, y);
-//				try {
-//					image.redrawMineField();
-//				} catch (IOException e) {
-//					System.out.println("Can't redraw minefield");
-//					e.printStackTrace();
-//				}
+				// try {
+				// image.redrawMineField();
+				// } catch (IOException e) {
+				// System.out.println("Can't redraw minefield");
+				// e.printStackTrace();
+				// }
 			}
 		} else {
 			gameOver(x, y);
@@ -234,8 +237,10 @@ public class MineFieldModelImpl implements MineFieldModel {
 	}
 
 	private void gameOver(int xBlast, int yBlast) {
+		vibrDuration = 800;
 		cells[xBlast][yBlast].setMark(Mark.blasted);
-		sound = "resources/sounds/Blast.au";
+		// sound = "resources/sounds/Blast.au";
+		soundRes = R.raw.blast;
 		gameOver();
 		image.setGameProcessTxt("Game: Blasted");
 	}
@@ -258,18 +263,27 @@ public class MineFieldModelImpl implements MineFieldModel {
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
 			image.setGameProcessTxt("Game: Win!");
-			sound = "resources/sounds/Win.au";
+			// sound = "resources/sounds/Win.au";
+		
+				soundRes = R.raw.win;
+			
 		} else {
 			if (sound == null) {
-				sound = "resources/sounds/Lose.au";
+				// sound = "resources/sounds/Lose.au";
+				
+					if (soundRes != R.raw.blast) {
+				soundRes = R.raw.lose;
+			}	
+				
 			}
 		}
-		soundHelper(sound);
+		image.vibrate(vibrDuration);
+		soundHelper(soundRes);
 
 		try {
 			image.redrawMineField();
 		} catch (IOException e) {
-			System.out.println("XXXXXXXXXXXXXXXXXX");
+			// System.out.println("XXXXXXXXXXXXXXXXXX");
 			e.printStackTrace();
 		}
 	}
@@ -302,20 +316,21 @@ public class MineFieldModelImpl implements MineFieldModel {
 				pauseRemain--;
 				image.setPauseButtonTxt("Resume");
 				sound = "resources/sounds/Pause.au";
-				soundHelper(sound);
+				// soundHelper(sound);
 			}
 		} else {
 			paused = false;
 			image.setPauseButtonTxt("Pause (" + pauseRemain + ")");
 			sound = "resources/sounds/Pause.au";
-			soundHelper(sound);
+			// soundHelper(sound);
 		}
 	}
 
-	private void soundHelper(String sound) {
-		this.sound = sound;
-		SoundPlayer.play(sound);
-		sound = null;
+	private void soundHelper(int soundRes) {// /////////////////////////////////////////////////////////////
+		// this.soundRes = soundRes;
+		// SoundPlayer.play(soundRes);
+		// soundRes = null;
+		image.playSound(soundRes);
 	}
 
 	public MineFieldView getImage() {
