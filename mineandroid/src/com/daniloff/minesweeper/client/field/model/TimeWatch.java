@@ -1,6 +1,5 @@
-package com.daniloff.minesweeper.client.misc;
+package com.daniloff.minesweeper.client.field.model;
 
-import com.daniloff.minesweeper.client.field.model.MineFieldModel;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
 
 public class TimeWatch implements Runnable {

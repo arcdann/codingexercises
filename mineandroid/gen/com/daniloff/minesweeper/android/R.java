@@ -62,10 +62,11 @@ public final class R {
     public static final class raw {
         public static final int blast=0x7f040000;
         public static final int click=0x7f040001;
-        public static final int explosion=0x7f040002;
-        public static final int lose=0x7f040003;
-        public static final int pause=0x7f040004;
-        public static final int win=0x7f040005;
+        public static final int clickclick=0x7f040002;
+        public static final int explosion=0x7f040003;
+        public static final int lose=0x7f040004;
+        public static final int pause=0x7f040005;
+        public static final int win=0x7f040006;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;

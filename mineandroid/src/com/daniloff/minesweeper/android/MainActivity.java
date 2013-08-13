@@ -46,6 +46,8 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	private boolean stopTimeWatch;
 	private ImageButton flagButton;
 
+	private int soundRes = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,11 +91,18 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			break;
 		case R.id.restartButton:
 			topText.setText("Restart button pressed");
+
+			// recreate();// //////////////////////////////////////////////////
+
 			break;
 		case R.id.pauseButton:
 			topText.setText("Pause button pressed");
+			
+			
 			break;
 		case R.id.flagButton:
+			soundRes = R.raw.clickclick;
+			field.soundHelper(soundRes);
 			if (!flagButtonPressed) {
 				topText.setText("Flag button pressed");
 				flagButtonPressed = true;
@@ -118,10 +127,10 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 				int x = id % Y;
 				int y = (id - x) / Y;
 
-				// sound
-
 				ImageButton b = (ImageButton) v;
 				if (field.isGameOver())
+					return;
+				if (field.getCells()[x][y].isFlagged())
 					return;
 				if (!flagButtonPressed) {
 					topText.setText("buttons[" + x + "][" + y + "] stepped");

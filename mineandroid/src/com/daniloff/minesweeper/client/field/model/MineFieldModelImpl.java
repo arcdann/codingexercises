@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.daniloff.minesweeper.android.R;
 import com.daniloff.minesweeper.client.field.view.MineFieldView;
-import com.daniloff.minesweeper.client.misc.SoundPlayer;
-import com.daniloff.minesweeper.client.misc.TimeWatch;
 import com.daniloff.minesweeper.client.settings.GameSettings;
 import com.daniloff.minesweeper.serverAPI.Request;
 import com.daniloff.minesweeper.serverAPI.Response;
@@ -31,9 +29,9 @@ public class MineFieldModelImpl implements MineFieldModel {
 	private double timeMoveRemain;
 	private int moveCount;
 	private boolean noTimeLimit;
-	private String sound;
-	private int soundRes;
-	private int vibrDuration = 100;
+	// private String sound;
+	private int soundRes = 0;
+	private int vibrDuration = 50;
 
 	private Request request;
 	private Response response;
@@ -139,22 +137,17 @@ public class MineFieldModelImpl implements MineFieldModel {
 		cells[x][y].setShown(true);
 		moveCount++;
 		showMoveCount();
+		soundRes=R.raw.click;
+		soundHelper(soundRes);
 
 		if (!cells[x][y].isMined()) {
 			int minesAround = countMinesAround(x, y);
 			if (minesAround == 0)
 				cells[x][y].setMark(Mark.empty);
-
 			else
 				cells[x][y].setMark(Mark.valueOf(minesAround));
 			if (minesAround == 0) {
 				openAdjacentCells(x, y);
-				// try {
-				// image.redrawMineField();
-				// } catch (IOException e) {
-				// System.out.println("Can't redraw minefield");
-				// e.printStackTrace();
-				// }
 			}
 		} else {
 			gameOver(x, y);
@@ -177,6 +170,10 @@ public class MineFieldModelImpl implements MineFieldModel {
 
 	@Override
 	public void flag(int x, int y) {
+		
+		soundRes=R.raw.clickclick;
+		soundHelper(soundRes);
+		
 		if (!cells[x][y].isFlagged()) {
 			setTimeMoveRemain(gameSettings.getTimeForMove());
 			moveCount++;
@@ -239,7 +236,6 @@ public class MineFieldModelImpl implements MineFieldModel {
 	private void gameOver(int xBlast, int yBlast) {
 		vibrDuration = 800;
 		cells[xBlast][yBlast].setMark(Mark.blasted);
-		// sound = "resources/sounds/Blast.au";
 		soundRes = R.raw.blast;
 		gameOver();
 		image.setGameProcessTxt("Game: Blasted");
@@ -263,18 +259,11 @@ public class MineFieldModelImpl implements MineFieldModel {
 		System.out.println("Game Win: " + gameWon);
 		if (gameWon) {
 			image.setGameProcessTxt("Game: Win!");
-			// sound = "resources/sounds/Win.au";
-		
-				soundRes = R.raw.win;
-			
+			soundRes = R.raw.win;
+
 		} else {
-			if (sound == null) {
-				// sound = "resources/sounds/Lose.au";
-				
-					if (soundRes != R.raw.blast) {
+			if (soundRes != R.raw.blast) {
 				soundRes = R.raw.lose;
-			}	
-				
 			}
 		}
 		image.vibrate(vibrDuration);
@@ -283,7 +272,6 @@ public class MineFieldModelImpl implements MineFieldModel {
 		try {
 			image.redrawMineField();
 		} catch (IOException e) {
-			// System.out.println("XXXXXXXXXXXXXXXXXX");
 			e.printStackTrace();
 		}
 	}
@@ -315,22 +303,22 @@ public class MineFieldModelImpl implements MineFieldModel {
 				paused = true;
 				pauseRemain--;
 				image.setPauseButtonTxt("Resume");
-				sound = "resources/sounds/Pause.au";
-				// soundHelper(sound);
+				soundRes = R.raw.pause;
+				soundHelper(soundRes);
 			}
 		} else {
 			paused = false;
 			image.setPauseButtonTxt("Pause (" + pauseRemain + ")");
-			sound = "resources/sounds/Pause.au";
-			// soundHelper(sound);
+			soundRes = R.raw.pause;
+			soundHelper(soundRes);
 		}
 	}
 
-	private void soundHelper(int soundRes) {// /////////////////////////////////////////////////////////////
-		// this.soundRes = soundRes;
-		// SoundPlayer.play(soundRes);
-		// soundRes = null;
-		image.playSound(soundRes);
+	public void soundHelper(int soundRes) {
+		if (soundRes != 0) {
+			image.playSound(soundRes);
+			soundRes = 0;
+		}
 	}
 
 	public MineFieldView getImage() {
@@ -345,7 +333,7 @@ public class MineFieldModelImpl implements MineFieldModel {
 	public Cell[][] getCells() {
 		return cells;
 	}
-
+	
 	public boolean isGameOver() {
 		return gameOver;
 	}

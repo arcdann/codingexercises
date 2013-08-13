@@ -30,4 +30,7 @@ public interface MineFieldModel {
 	double getTimeMoveRemain();
 
 	void setTimeMoveRemain(double d);
+
+	void soundHelper(int soundRes);
+
 }
