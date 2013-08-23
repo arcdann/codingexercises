@@ -2,6 +2,7 @@ package com.daniloff.minesweeper.android;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -86,8 +87,12 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.newGameButton:
-			topText.setText("New game button pressed");
+		case R.id.aboutButton:
+//			topText.setText("New game button pressed");
+			
+			Intent intent=new Intent(MainActivity.this, AboutActivity.class);
+			startActivity(intent);
+			
 			break;
 		case R.id.restartButton:
 			topText.setText("Restart button pressed");
@@ -169,7 +174,7 @@ public class MainActivity extends Activity implements OnClickListener, MineField
 			tl.addView(tr);
 		}
 
-		Button newGameButton = (Button) findViewById(R.id.newGameButton);
+		Button newGameButton = (Button) findViewById(R.id.aboutButton);
 		newGameButton.setText("New game");
 		newGameButton.setOnClickListener(this);
 

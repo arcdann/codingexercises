@@ -35,6 +35,9 @@ public class ServerBootstrap {
 		return(format.format(new Date(time)));
 	}
 
+//	private class Singleton{
+//		
+//	}
 	private static class MineLayer extends Thread {
 		private Socket socket;
 		private int clientNumber;
